@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/memeSearchFragment">
+
+    <fragment
+        android:id="@+id/memeSearchFragment"
+        android:name="com.srdroid.memedb.presentation.meme_search.MemeSearchFragment"
+        android:label="@string/memes_db"
+        tools:layout="@layout/fragment_meme_search">
+        <action
+            android:id="@+id/action_memeSearchFragment_to_memeDetailsFragment"
+            app:destination="@id/memeDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/memeDetailsFragment"
+        android:name="com.srdroid.memedb.presentation.meme_details.MemeDetailsFragment"
+        android:label="{title} " >
+        <argument
+            android:name="meme_id"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="title"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+    </fragment>
+</navigation>
