@@ -2,7 +2,6 @@ package com.srdroid.memedb.viewmodel
 
 import com.srdroid.memedb.common.TestCoroutineRule
 import com.srdroid.memedb.common.MockResponse
-import com.srdroid.memedb.domain.repository.MemeRepository
 import com.srdroid.memedb.domain.use_case.GetMemeUseCase
 import com.srdroid.memedb.presentation.meme_search.MemeSearchViewModel
 import io.mockk.coEvery
@@ -28,12 +27,7 @@ class MemeSearchViewModelUT {
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()
 
-    private val memeSearchRepository = mockk<MemeRepository>()
-    private val getMemesUseCase by lazy {
-        GetMemeUseCase(
-            memeSearchRepository
-        )
-    }
+    private val getMemesUseCase = mockk<GetMemeUseCase>()
 
     private lateinit var memeSearchViewModel: MemeSearchViewModel
 
@@ -43,20 +37,31 @@ class MemeSearchViewModelUT {
     }
 
     @Test
-    fun testMemeSearchViewModel_searchMeme_success() {
+    fun testMemeSearchViewModel_getMeme_success() {
         testCoroutineRule.testDispatcher.runBlockingTest {
-            coEvery { memeSearchRepository.getMemes() } returns MockResponse.getMemesModel()
+            coEvery { getMemesUseCase.invoke() } returns MockResponse.getResourceData()
             memeSearchViewModel.getMemes()
             assertEquals(memeSearchViewModel.memeSearchList.value.data?.get(0)?.id, "1")
         }
     }
 
     @Test
-    fun testMemeSearchViewModel_searchMeme_failure() {
+    fun testMemeSearchViewModel_getMeme_failure() {
         testCoroutineRule.testDispatcher.runBlockingTest {
-            coEvery { memeSearchRepository.getMemes() } returns anyOrNull()
+            coEvery { getMemesUseCase.invoke() } returns MockResponse.getDataFailureMock()
             memeSearchViewModel.getMemes()
             assertNotNull(memeSearchViewModel.memeSearchList.value.error)
         }
     }
+
+    @Test
+    fun testMemeSearchViewModel_filter() {
+        testCoroutineRule.testDispatcher.runBlockingTest {
+            coEvery { getMemesUseCase.invoke() } returns MockResponse.getResourceData()
+            memeSearchViewModel.getMemes()
+            memeSearchViewModel.filterMemes("d")
+            assertEquals(memeSearchViewModel.memeSearchList.value.data?.get(0)?.id, "1")
+        }
+    }
+
 }

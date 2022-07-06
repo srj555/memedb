@@ -3,19 +3,45 @@ package com.srdroid.memedb.common
 import com.srdroid.memedb.data.model.Data
 import com.srdroid.memedb.data.model.Meme
 import com.srdroid.memedb.data.model.MemeDTO
+import com.srdroid.memedb.data.model.toDomainMeme
+import com.srdroid.memedb.domain.model.MemeModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import retrofit2.HttpException
+import java.io.IOException
 
 object MockResponse {
 
     fun getMemesModel(): MemeDTO {
-        var memesModel = Meme(
+        val memesModel = Meme(
             box_count = 1,
             height = 2,
             id = "1",
-            name = "a",
+            name = "drake",
             url = "a",
             width = 2
         )
         val listMemesModel: List<Meme> = listOf(memesModel)
         return MemeDTO(data = Data(listMemesModel), success = true)
+    }
+
+    fun getResourceData(): Flow<Resource<List<MemeModel>>> = channelFlow {
+        var domainData = listOf<MemeModel>()
+        val data =
+            getMemesModel()
+        domainData =
+            if (data.success) data.data.memes.map { it.toDomainMeme() } else domainData
+        send(Resource.Success(data = domainData))
+
+    }
+
+    fun getDataFailureMock(): Flow<Resource<List<MemeModel>>> = channelFlow {
+        var domainData = listOf<MemeModel>()
+        send(
+            Resource.Error(
+                message = "An Unknown error occurred",
+                data = domainData
+            )
+        )
     }
 }
