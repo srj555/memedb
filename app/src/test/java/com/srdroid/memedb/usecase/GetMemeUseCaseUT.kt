@@ -2,17 +2,25 @@ package com.srdroid.memedb.usecase
 
 import com.srdroid.memedb.core.TestCoroutineRule
 import com.srdroid.memedb.core.MockResponse.getMemesModel
+import com.srdroid.memedb.data.model.MemeDTO
 import com.srdroid.memedb.data.repository.MemeRepositoryImpl
+import com.srdroid.memedb.domain.model.MemeModel
 import com.srdroid.memedb.domain.use_case.GetMemeUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import retrofit2.HttpException
+import retrofit2.Response
+import java.net.HttpURLConnection
 
 
 /**
@@ -45,8 +53,15 @@ class GetMemeUseCaseUT {
     @Test
     fun testMemeSearchUseCases_getMemeSearch_Failure() =
         testCoroutineRule.testDispatcher.runBlockingTest {
-            coEvery { memeSearchRepository.getMemes() } returns any()
+            val httpException = HttpException(
+                Response.error<List<MemeDTO>>(
+                    HttpURLConnection.HTTP_NOT_FOUND,
+                    mock()
+                )
+            )
+            var domainData = listOf<MemeModel>()
+            coEvery { memeSearchRepository.getMemes() }.throws(httpException)
             val first = searchMemesUseCase.invoke().first()
-            assertNull(first.data)
+            assertSame(domainData, first.data)
         }
 }
