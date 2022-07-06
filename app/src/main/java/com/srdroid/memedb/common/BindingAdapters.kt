@@ -10,7 +10,8 @@ import com.srdroid.memedb.R
 
 @BindingAdapter("urlToImage")
 fun urlToImage(view: ImageView, s: String?) {
-    val options = RequestOptions.placeholderOf(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background)
+    val options = RequestOptions.placeholderOf(R.drawable.ic_launcher_background)
+        .error(R.drawable.ic_launcher_background)
     Glide.with(view).setDefaultRequestOptions(options).load(s ?: "").into(view)
 }
 

@@ -10,7 +10,7 @@ import com.srdroid.memedb.domain.model.MemeModel
 class MemeSearchAdapter : RecyclerView.Adapter<MemeSearchAdapter.MyViewHolder>() {
 
 
-    private var listener :((MemeModel)->Unit)?=null
+    private var listener: ((MemeModel) -> Unit)? = null
 
     var list = mutableListOf<MemeModel>()
 
@@ -32,8 +32,8 @@ class MemeSearchAdapter : RecyclerView.Adapter<MemeSearchAdapter.MyViewHolder>()
         return MyViewHolder(binding)
     }
 
-    fun itemClickListener(l:(MemeModel)->Unit){
-        listener= l
+    fun itemClickListener(l: (MemeModel) -> Unit) {
+        listener = l
     }
 
     private val set = ConstraintSet()
@@ -46,12 +46,6 @@ class MemeSearchAdapter : RecyclerView.Adapter<MemeSearchAdapter.MyViewHolder>()
                 it(this.list[position])
             }
         }
-
-     /*   val ratio =String.format("%d:%d", 100,100)
-        set.clone(holder.c)
-        set.setDimensionRatio(holder.mImgPoster.id, ratio)
-        set.applyTo(holder.mConstraintLayout)*/
-
     }
 
     override fun getItemCount(): Int {

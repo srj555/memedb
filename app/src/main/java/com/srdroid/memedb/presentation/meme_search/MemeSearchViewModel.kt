@@ -19,7 +19,7 @@ class MemeSearchViewModel @Inject constructor(
 
     private val _memeSearchList = MutableStateFlow(MemeSearchState())
     val memeSearchList: StateFlow<MemeSearchState> = _memeSearchList
-    private lateinit var _memesList:List<MemeModel>
+    private lateinit var _memesList: List<MemeModel>
 
     fun getMemes() {
         getMemeUseCase().onStart {
@@ -28,7 +28,7 @@ class MemeSearchViewModel @Inject constructor(
         }.onEach {
             when (it) {
                 is Resource.Success -> {
-                    _memesList = it.data?: listOf()
+                    _memesList = it.data ?: listOf()
                     _memeSearchList.value = MemeSearchState(data = _memesList)
                 }
                 is Resource.Error -> {
