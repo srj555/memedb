@@ -1,6 +1,6 @@
 package com.srdroid.memedb.domain.use_case
 
-import com.srdroid.memedb.common.Resource
+import com.srdroid.memedb.core.Resource
 import com.srdroid.memedb.data.model.toDomainMeme
 import com.srdroid.memedb.domain.model.MemeModel
 import com.srdroid.memedb.domain.repository.MemeDetailsRepository

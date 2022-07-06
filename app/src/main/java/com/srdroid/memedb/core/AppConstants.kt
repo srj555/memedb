@@ -1,4 +1,4 @@
-package com.srdroid.memedb.common
+package com.srdroid.memedb.core
 
 object AppConstants {
 

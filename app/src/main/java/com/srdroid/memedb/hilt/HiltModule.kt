@@ -1,6 +1,6 @@
 package com.srdroid.memedb.hilt
 
-import com.srdroid.memedb.common.AppConstants
+import com.srdroid.memedb.core.AppConstants
 import com.srdroid.memedb.data.api.MemeAPI
 import com.srdroid.memedb.data.repository.MemeDetailsRepositoryImpl
 import com.srdroid.memedb.data.repository.MemeRepositoryImpl

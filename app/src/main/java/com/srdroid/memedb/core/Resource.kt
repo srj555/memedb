@@ -1,4 +1,4 @@
-package com.srdroid.memedb.common
+package com.srdroid.memedb.core
 
 
 sealed class Resource<T>(val data: T? = null, val message: String? = null) {

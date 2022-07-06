@@ -2,7 +2,7 @@ package com.srdroid.memedb.presentation.meme_search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.srdroid.memedb.common.Resource
+import com.srdroid.memedb.core.Resource
 import com.srdroid.memedb.domain.model.MemeModel
 import com.srdroid.memedb.domain.use_case.GetMemeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

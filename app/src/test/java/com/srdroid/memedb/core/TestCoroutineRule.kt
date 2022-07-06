@@ -1,4 +1,4 @@
-package com.srdroid.memedb.common
+package com.srdroid.memedb.core
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -1,7 +1,7 @@
 package com.srdroid.memedb.usecase
 
-import com.srdroid.memedb.common.TestCoroutineRule
-import com.srdroid.memedb.common.MockResponse.getMemesModel
+import com.srdroid.memedb.core.TestCoroutineRule
+import com.srdroid.memedb.core.MockResponse.getMemesModel
 import com.srdroid.memedb.data.repository.MemeRepositoryImpl
 import com.srdroid.memedb.domain.use_case.GetMemeUseCase
 import io.mockk.coEvery

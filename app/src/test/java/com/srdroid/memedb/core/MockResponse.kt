@@ -1,4 +1,4 @@
-package com.srdroid.memedb.common
+package com.srdroid.memedb.core
 
 import com.srdroid.memedb.data.model.Data
 import com.srdroid.memedb.data.model.Meme
@@ -7,8 +7,6 @@ import com.srdroid.memedb.data.model.toDomainMeme
 import com.srdroid.memedb.domain.model.MemeModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import retrofit2.HttpException
-import java.io.IOException
 
 object MockResponse {
 

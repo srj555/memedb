@@ -1,7 +1,7 @@
 package com.srdroid.memedb.viewmodel
 
-import com.srdroid.memedb.common.TestCoroutineRule
-import com.srdroid.memedb.common.MockResponse
+import com.srdroid.memedb.core.TestCoroutineRule
+import com.srdroid.memedb.core.MockResponse
 import com.srdroid.memedb.domain.use_case.GetMemeUseCase
 import com.srdroid.memedb.presentation.meme_search.MemeSearchViewModel
 import io.mockk.coEvery
@@ -13,7 +13,6 @@ import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.kotlin.anyOrNull
 
 /**
  * Example local unit test, which will execute on the development machine (host).
