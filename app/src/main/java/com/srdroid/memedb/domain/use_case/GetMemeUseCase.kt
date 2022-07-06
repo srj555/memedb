@@ -1,5 +1,7 @@
 package com.srdroid.memedb.domain.use_case
 
+import com.srdroid.memedb.core.AppConstants.CONNECTIVITY_ERROR
+import com.srdroid.memedb.core.AppConstants.UNKNOWN_ERROR
 import com.srdroid.memedb.core.Resource
 import com.srdroid.memedb.data.model.toDomainMeme
 import com.srdroid.memedb.domain.model.MemeModel
@@ -25,21 +27,21 @@ class GetMemeUseCase @Inject constructor(private val repository: MemeRepository)
         } catch (e: HttpException) {
             send(
                 Resource.Error(
-                    message = e.localizedMessage ?: "An Unknown error occurred",
+                    message = e.localizedMessage ?: UNKNOWN_ERROR,
                     data = domainData
                 )
             )
         } catch (e: IOException) {
             send(
                 Resource.Error(
-                    message = e.localizedMessage ?: "Check Connectivity",
+                    message = e.localizedMessage ?: CONNECTIVITY_ERROR,
                     data = domainData
                 )
             )
         } catch (e: Exception) {
             send(
                 Resource.Error(
-                    message = e.localizedMessage ?: "An Unknown error occurred",
+                    message = e.localizedMessage ?: UNKNOWN_ERROR,
                     data = domainData
                 )
             )
