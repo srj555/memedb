@@ -66,7 +66,7 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun updateUIBasedOnResult() {
         // Observe Result
         lifecycle.coroutineScope.launchWhenCreated {
-            viewModel.memeSearchList.collect {
+            viewModel.getMemesState.collect {
                 // On Loading State
                 onLoadingState(it)
                 // On Error State

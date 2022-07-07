@@ -17,24 +17,24 @@ class MemeSearchViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private val _memeSearchList = MutableStateFlow(MemeSearchState())
-    val memeSearchList: StateFlow<MemeSearchState> = _memeSearchList
+    private val _getMemesState = MutableStateFlow(MemeSearchState())
+    val getMemesState: StateFlow<MemeSearchState> = _getMemesState
     private lateinit var _memesList: List<MemeModel>
 
     fun getMemes() {
         getMemeUseCase().onStart {
             // Update Loading State
-            _memeSearchList.value = MemeSearchState(isLoading = true)
+            _getMemesState.value = MemeSearchState(isLoading = true)
         }.onEach {
             when (it) {
                 is Resource.Success -> {
                     _memesList = it.data ?: listOf()
-                    _memeSearchList.value = MemeSearchState(data = _memesList)
+                    _getMemesState.value = MemeSearchState(data = _memesList)
                 }
                 is Resource.Error -> {
-                    _memeSearchList.value = MemeSearchState(error = it.message ?: "")
+                    _getMemesState.value = MemeSearchState(error = it.message ?: "")
                 }
-                else -> _memeSearchList.value = MemeSearchState(error = it.message ?: "")
+                else -> _getMemesState.value = MemeSearchState(error = it.message ?: "")
             }
         }.launchIn(viewModelScope)
     }
@@ -44,8 +44,8 @@ class MemeSearchViewModel @Inject constructor(
         val filteredData = _memesList.filter {
             it.name.lowercase().contains(s.lowercase())
         }
-        // update data
-        _memeSearchList.value =
+        // update state
+        _getMemesState.value =
             MemeSearchState(data = filteredData)
     }
 

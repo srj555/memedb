@@ -40,7 +40,7 @@ class MemeSearchViewModelUT {
         testCoroutineRule.testDispatcher.runBlockingTest {
             coEvery { getMemesUseCase.invoke() } returns MockResponse.getResourceData()
             memeSearchViewModel.getMemes()
-            assertEquals(memeSearchViewModel.memeSearchList.value.data?.get(0)?.id, "1")
+            assertEquals(memeSearchViewModel.getMemesState.value.data?.get(0)?.id, "1")
         }
     }
 
@@ -49,7 +49,7 @@ class MemeSearchViewModelUT {
         testCoroutineRule.testDispatcher.runBlockingTest {
             coEvery { getMemesUseCase.invoke() } returns MockResponse.getDataFailureMock()
             memeSearchViewModel.getMemes()
-            assertNotNull(memeSearchViewModel.memeSearchList.value.error)
+            assertNotNull(memeSearchViewModel.getMemesState.value.error)
         }
     }
 
@@ -59,7 +59,7 @@ class MemeSearchViewModelUT {
             coEvery { getMemesUseCase.invoke() } returns MockResponse.getResourceData()
             memeSearchViewModel.getMemes()
             memeSearchViewModel.filterMemes("d")
-            assertEquals(memeSearchViewModel.memeSearchList.value.data?.get(0)?.id, "1")
+            assertEquals(memeSearchViewModel.getMemesState.value.data?.get(0)?.id, "1")
         }
     }
 
