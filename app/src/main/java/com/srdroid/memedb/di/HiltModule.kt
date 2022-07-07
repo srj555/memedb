@@ -1,4 +1,4 @@
-package com.srdroid.memedb.hilt
+package com.srdroid.memedb.di
 
 import com.srdroid.memedb.core.AppConstants
 import com.srdroid.memedb.data.api.MemeAPI
