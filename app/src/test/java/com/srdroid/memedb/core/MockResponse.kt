@@ -8,6 +8,8 @@ import com.srdroid.memedb.domain.model.MemeModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 
+const val ID = "1"
+
 object MockResponse {
 
     fun getMemesModel(): MemeDTO {
@@ -34,7 +36,7 @@ object MockResponse {
     }
 
     fun getDataFailureMock(): Flow<Resource<List<MemeModel>>> = channelFlow {
-        var domainData = listOf<MemeModel>()
+        val domainData = listOf<MemeModel>()
         send(
             Resource.Error(
                 message = "An Unknown error occurred",

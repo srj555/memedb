@@ -1,8 +1,10 @@
 package com.srdroid.memedb.viewmodel
 
+import com.srdroid.memedb.core.ID
 import com.srdroid.memedb.core.TestCoroutineRule
 import com.srdroid.memedb.core.MockResponse
 import com.srdroid.memedb.domain.use_case.GetMemeUseCase
+import com.srdroid.memedb.presentation.mapper.MemeMapper
 import com.srdroid.memedb.presentation.meme_search.MemeSearchViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -27,12 +29,13 @@ class MemeSearchViewModelUT {
     val testCoroutineRule = TestCoroutineRule()
 
     private val getMemesUseCase = mockk<GetMemeUseCase>()
+    private val mapper = MemeMapper()
 
     private lateinit var memeSearchViewModel: MemeSearchViewModel
 
     @Before
     fun setUp() {
-        memeSearchViewModel = MemeSearchViewModel(getMemesUseCase)
+        memeSearchViewModel = MemeSearchViewModel(getMemesUseCase,mapper)
     }
 
     @Test
@@ -40,7 +43,7 @@ class MemeSearchViewModelUT {
         testCoroutineRule.testDispatcher.runBlockingTest {
             coEvery { getMemesUseCase.invoke() } returns MockResponse.getResourceData()
             memeSearchViewModel.getMemes()
-            assertEquals(memeSearchViewModel.getMemesState.value.data?.get(0)?.id, "1")
+            assertEquals(memeSearchViewModel.getMemesState.value.data?.get(0)?.id, ID)
         }
     }
 
@@ -59,7 +62,7 @@ class MemeSearchViewModelUT {
             coEvery { getMemesUseCase.invoke() } returns MockResponse.getResourceData()
             memeSearchViewModel.getMemes()
             memeSearchViewModel.filterMemes("d")
-            assertEquals(memeSearchViewModel.getMemesState.value.data?.get(0)?.id, "1")
+            assertEquals(memeSearchViewModel.getMemesState.value.data?.get(0)?.id, ID)
         }
     }
 

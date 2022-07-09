@@ -6,37 +6,36 @@ import com.srdroid.memedb.data.model.toDomainMeme
 import com.srdroid.memedb.domain.model.MemeModel
 import com.srdroid.memedb.domain.repository.MemeDetailsRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.channelFlow
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
 class GetMemeDetailsUseCase @Inject constructor(private val repository: MemeDetailsRepository) {
 
-    operator fun invoke(id: String): Flow<Resource<List<MemeModel>>> = flow {
+    operator fun invoke(id: String): Flow<Resource<List<MemeModel>>> = channelFlow {
         var domainData = listOf<MemeModel>()
         try {
-            emit(Resource.Loading(data = domainData))
             val data = repository.getMemeDetails(id)
             domainData =
                 if (data.success) data.data.memes.map { it.toDomainMeme() } else emptyList()
-            emit(Resource.Success(data = domainData))
+            send(Resource.Success(data = domainData))
         } catch (e: HttpException) {
-            emit(
+            send(
                 Resource.Error(
                     message = e.localizedMessage ?: AppConstants.UNKNOWN_ERROR,
                     data = domainData
                 )
             )
         } catch (e: IOException) {
-            emit(
+            send(
                 Resource.Error(
                     message = e.localizedMessage ?: AppConstants.CONNECTIVITY_ERROR,
                     data = domainData
                 )
             )
         } catch (e: Exception) {
-            emit(
+            send(
                 Resource.Error(
                     message = e.localizedMessage ?: AppConstants.CONNECTIVITY_ERROR,
                     data = domainData

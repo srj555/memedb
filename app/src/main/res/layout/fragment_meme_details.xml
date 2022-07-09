@@ -9,7 +9,7 @@
 
         <variable
             name="memeDetails"
-            type="com.srdroid.memedb.domain.model.MemeModel" />
+            type="com.srdroid.memedb.presentation.model.MemeUIModel" />
 
     </data>
 
