@@ -1,7 +1,8 @@
 package com.srdroid.memedb.usecase
 
-import com.srdroid.memedb.core.TestCoroutineRule
+import com.srdroid.memedb.core.ID
 import com.srdroid.memedb.core.MockResponse.getMemesModel
+import com.srdroid.memedb.core.TestCoroutineRule
 import com.srdroid.memedb.data.model.MemeDTO
 import com.srdroid.memedb.data.repository.MemeRepositoryImpl
 import com.srdroid.memedb.domain.model.MemeModel
@@ -10,13 +11,11 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.runBlockingTest
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody
-import org.junit.Assert.*
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertSame
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import retrofit2.HttpException
 import retrofit2.Response
@@ -43,25 +42,29 @@ class GetMemeUseCaseUT {
     }
 
     @Test
-    fun testMemeSearchUseCases_getMemeSearch_Completed() =
-        testCoroutineRule.testDispatcher.runBlockingTest {
-            coEvery { memeSearchRepository.getMemes() } returns getMemesModel()
-            val first = searchMemesUseCase.invoke().first()
-            assertEquals(first.data?.get(0)?.id, "1")
-        }
+    fun when_UCGetMeme_Expect_Data() = runTest {
+        // GIVEN
+        coEvery { memeSearchRepository.getMemes() } returns getMemesModel()
+        // WHEN
+        val first = searchMemesUseCase.invoke().first()
+        // THEN
+        assertEquals(first.data?.get(0)?.id, ID)
+    }
 
     @Test
-    fun testMemeSearchUseCases_getMemeSearch_Failure() =
-        testCoroutineRule.testDispatcher.runBlockingTest {
-            val httpException = HttpException(
-                Response.error<List<MemeDTO>>(
-                    HttpURLConnection.HTTP_NOT_FOUND,
-                    mock()
-                )
+    fun given_Error_when_UCGetMeme_Expect_EmptyData() = runTest {
+        // GIVEN
+        val httpException = HttpException(
+            Response.error<List<MemeDTO>>(
+                HttpURLConnection.HTTP_NOT_FOUND,
+                mock()
             )
-            var domainData = listOf<MemeModel>()
-            coEvery { memeSearchRepository.getMemes() }.throws(httpException)
-            val first = searchMemesUseCase.invoke().first()
-            assertSame(domainData, first.data)
-        }
+        )
+        val domainData = listOf<MemeModel>()
+        coEvery { memeSearchRepository.getMemes() }.throws(httpException)
+        // WHEN
+        val first = searchMemesUseCase.invoke().first()
+        // THEN
+        assertSame(domainData, first.data)
+    }
 }

@@ -12,6 +12,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Rule
@@ -42,25 +43,29 @@ class MemeDetailsUseCaseUT {
     }
 
     @Test
-    fun testMemeSearchUseCases_getMemeSearch_Completed() =
-        testCoroutineRule.testDispatcher.runBlockingTest {
-            coEvery { memeDetailsRepository.getMemeDetails(ID) } returns getMemesModel()
-            val first = memeDetailsUseCase.invoke(ID).first()
-            assertEquals(first.data?.get(0)?.id, ID)
-        }
+    fun when_UCGetMemeDetails_Expect_Data() = runTest {
+        // GIVEN
+        coEvery { memeDetailsRepository.getMemeDetails(ID) } returns getMemesModel()
+        // WHEN
+        val first = memeDetailsUseCase.invoke(ID).first()
+        // THEN
+        assertEquals(first.data?.get(0)?.id, ID)
+    }
 
     @Test
-    fun testMemeSearchUseCases_getMemeSearch_Failure() =
-        testCoroutineRule.testDispatcher.runBlockingTest {
-            val httpException = HttpException(
-                Response.error<List<MemeDTO>>(
-                    HttpURLConnection.HTTP_NOT_FOUND,
-                    mock()
-                )
+    fun given_Error_when_UCGetMemeDetails_Expect_Error() = runTest {
+        // GIVEN
+        val httpException = HttpException(
+            Response.error<List<MemeDTO>>(
+                HttpURLConnection.HTTP_NOT_FOUND,
+                mock()
             )
-            val domainData = listOf<MemeModel>()
-            coEvery { memeDetailsRepository.getMemeDetails(ID) }.throws(httpException)
-            val first = memeDetailsUseCase.invoke(ID).first()
-            assertSame(domainData, first.data)
-        }
+        )
+        val domainData = listOf<MemeModel>()
+        coEvery { memeDetailsRepository.getMemeDetails(ID) }.throws(httpException)
+        // WHEN
+        val first = memeDetailsUseCase.invoke(ID).first()
+        // THEN
+        assertSame(domainData, first.data)
+    }
 }

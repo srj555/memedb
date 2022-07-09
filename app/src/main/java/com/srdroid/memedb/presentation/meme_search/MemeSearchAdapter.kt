@@ -10,7 +10,6 @@ import com.srdroid.memedb.presentation.model.MemeUIModel
 
 class MemeSearchAdapter : RecyclerView.Adapter<MemeSearchAdapter.MyViewHolder>() {
 
-
     private var listener: ((MemeUIModel) -> Unit)? = null
 
     var list = mutableListOf<MemeUIModel>()
@@ -20,10 +19,6 @@ class MemeSearchAdapter : RecyclerView.Adapter<MemeSearchAdapter.MyViewHolder>()
         this.list = list
         notifyDataSetChanged()
     }
-
-
-    class MyViewHolder(val viewHolder: ViewHolderSearchListBinding) :
-        RecyclerView.ViewHolder(viewHolder.root)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -53,4 +48,10 @@ class MemeSearchAdapter : RecyclerView.Adapter<MemeSearchAdapter.MyViewHolder>()
     override fun getItemCount(): Int {
         return this.list.size
     }
+
+    /**
+     * ViewHolder
+     */
+    class MyViewHolder(val viewHolder: ViewHolderSearchListBinding) :
+        RecyclerView.ViewHolder(viewHolder.root)
 }

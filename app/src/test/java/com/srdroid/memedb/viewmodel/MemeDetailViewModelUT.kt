@@ -1,5 +1,6 @@
 package com.srdroid.memedb.viewmodel
 
+import com.srdroid.memedb.core.ID
 import com.srdroid.memedb.core.MockResponse
 import com.srdroid.memedb.core.TestCoroutineRule
 import com.srdroid.memedb.domain.use_case.GetMemeDetailsUseCase
@@ -8,7 +9,7 @@ import com.srdroid.memedb.presentation.meme_details.MemeDetailsViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -38,21 +39,24 @@ class MemeDetailViewModelUT {
     }
 
     @Test
-    fun testMemeSearchViewModel_getMeme_success() {
-        testCoroutineRule.testDispatcher.runBlockingTest {
-            coEvery { getDetailsUseCase.invoke("1") } returns MockResponse.getResourceData()
-            memeDetailsViewModel.getMemeDetails("1")
-            assertEquals(memeDetailsViewModel.memeDetails.value.data?.id, "1")
-        }
+    fun when_GetMemeDetails_Expect_MemeDetailsData() = runTest {
+        //GIVEN
+        coEvery { getDetailsUseCase.invoke(ID) } returns MockResponse.getResourceData()
+        // WHEN
+        memeDetailsViewModel.getMemeDetails(ID)
+        // THEN
+        assertEquals(memeDetailsViewModel.memeDetails.value.data?.id, ID)
     }
 
     @Test
-    fun testMemeSearchViewModel_getMeme_failure() {
-        testCoroutineRule.testDispatcher.runBlockingTest {
-            coEvery { getDetailsUseCase.invoke("1") } returns MockResponse.getDataFailureMock()
-            memeDetailsViewModel.getMemeDetails("1")
-            assertNotNull(memeDetailsViewModel.memeDetails.value.error)
-        }
+    fun given_Error_when_GetMemeDetails_Expect_MemeDetailsError() = runTest {
+        //GIVEN
+        coEvery { getDetailsUseCase.invoke(ID) } returns MockResponse.getDataFailureMock()
+        // WHEN
+        memeDetailsViewModel.getMemeDetails(ID)
+        // THEN
+        assertNotNull(memeDetailsViewModel.memeDetails.value.error)
+
     }
 
 }
