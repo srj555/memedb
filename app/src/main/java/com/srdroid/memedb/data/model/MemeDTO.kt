@@ -1,15 +1,16 @@
 package com.srdroid.memedb.data.model
 
+import com.srdroid.memedb.data.base.DataModel
 import com.srdroid.memedb.domain.model.MemeModel
 
 data class MemeDTO(
     val `data`: Data,
     val success: Boolean
-)
+) : DataModel()
 
 data class Data(
     val memes: List<Meme>
-)
+) : DataModel()
 
 data class Meme(
     val box_count: Int,
@@ -18,7 +19,7 @@ data class Meme(
     val name: String,
     val url: String,
     val width: Int
-)
+) : DataModel()
 
 fun Meme.toDomainMeme(): MemeModel {
     return MemeModel(

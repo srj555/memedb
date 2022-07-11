@@ -37,7 +37,7 @@ class GetMemeDetailsUseCase @Inject constructor(private val repository: MemeDeta
         } catch (e: Exception) {
             send(
                 Resource.Error(
-                    message = e.localizedMessage ?: AppConstants.CONNECTIVITY_ERROR,
+                    message = e.localizedMessage ?: AppConstants.UNKNOWN_ERROR,
                     data = domainData
                 )
             )
