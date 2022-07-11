@@ -3,17 +3,16 @@ package com.srdroid.memedb.usecase
 import com.srdroid.memedb.core.ID
 import com.srdroid.memedb.core.MockResponse.getMemesModel
 import com.srdroid.memedb.core.TestCoroutineRule
+import com.srdroid.memedb.data.error.GeneralErrorHandlerImpl
 import com.srdroid.memedb.data.model.MemeDTO
 import com.srdroid.memedb.data.repository.MemeRepositoryImpl
-import com.srdroid.memedb.domain.model.MemeModel
 import com.srdroid.memedb.domain.use_case.GetMemeUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertSame
+import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.mock
@@ -37,7 +36,8 @@ class GetMemeUseCaseUT {
     private val memeSearchRepository = mockk<MemeRepositoryImpl>()
     private val searchMemesUseCase by lazy {
         GetMemeUseCase(
-            memeSearchRepository
+            memeSearchRepository,
+            GeneralErrorHandlerImpl()
         )
     }
 
@@ -60,11 +60,10 @@ class GetMemeUseCaseUT {
                 mock()
             )
         )
-        val domainData = listOf<MemeModel>()
         coEvery { memeSearchRepository.getMemes() }.throws(httpException)
         // WHEN
         val first = searchMemesUseCase.invoke().first()
         // THEN
-        assertSame(domainData, first.data)
+        assertNull(first.data)
     }
 }

@@ -1,5 +1,6 @@
 package com.srdroid.memedb.core
 
+import com.srdroid.memedb.data.error.ErrorEntity
 import com.srdroid.memedb.data.model.Data
 import com.srdroid.memedb.data.model.Meme
 import com.srdroid.memedb.data.model.MemeDTO
@@ -40,7 +41,17 @@ object MockResponse {
         send(
             Resource.Error(
                 message = "An Unknown error occurred",
-                data = domainData
+                data = domainData,
+                errorEntity = ErrorEntity.Network
+            )
+        )
+    }
+
+    fun getDataFailureUnknown(): Flow<Resource<List<MemeModel>>> = channelFlow {
+        val domainData = listOf<MemeModel>()
+        send(
+            Resource.Loading(
+                data = domainData,
             )
         )
     }

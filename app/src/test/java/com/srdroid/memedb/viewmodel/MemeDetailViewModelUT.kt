@@ -1,9 +1,11 @@
 package com.srdroid.memedb.viewmodel
 
+import android.content.Context
 import com.srdroid.memedb.core.ID
 import com.srdroid.memedb.core.MockResponse
 import com.srdroid.memedb.core.TestCoroutineRule
 import com.srdroid.memedb.domain.use_case.GetMemeDetailsUseCase
+import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
 import com.srdroid.memedb.presentation.meme_details.MemeDetailsViewModel
 import io.mockk.coEvery
@@ -32,10 +34,12 @@ class MemeDetailViewModelUT {
     private val mapper = MemeMapper()
 
     private lateinit var memeDetailsViewModel: MemeDetailsViewModel
+    private val mContextMock = mockk<Context>(relaxed = true)
+    private val errorViewMapper = ErrorViewMapper(mContextMock)
 
     @Before
     fun setUp() {
-        memeDetailsViewModel = MemeDetailsViewModel(getDetailsUseCase, mapper)
+        memeDetailsViewModel = MemeDetailsViewModel(getDetailsUseCase, mapper,errorViewMapper)
     }
 
     @Test
@@ -47,6 +51,18 @@ class MemeDetailViewModelUT {
         // THEN
         assertEquals(memeDetailsViewModel.memeDetails.value.data?.id, ID)
     }
+
+
+    @Test
+    fun given_Error_when_VMGetMemeDetails_Expect_MemeUnknownStateError() = runTest {
+        //GIVEN
+        coEvery { getDetailsUseCase.invoke(ID) } returns MockResponse.getDataFailureUnknown()
+        // WHEN
+        memeDetailsViewModel.getMemeDetails(ID)
+        // THEN
+        assertNotNull(memeDetailsViewModel.memeDetails.value.error)
+    }
+
 
     @Test
     fun given_Error_when_GetMemeDetails_Expect_MemeDetailsError() = runTest {

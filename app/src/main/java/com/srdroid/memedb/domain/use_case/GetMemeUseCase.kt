@@ -1,52 +1,36 @@
 package com.srdroid.memedb.domain.use_case
 
-import com.srdroid.memedb.core.AppConstants.CONNECTIVITY_ERROR
 import com.srdroid.memedb.core.AppConstants.UNKNOWN_ERROR
 import com.srdroid.memedb.core.Resource
 import com.srdroid.memedb.data.model.toDomainMeme
+import com.srdroid.memedb.domain.error.ErrorHandler
 import com.srdroid.memedb.domain.model.MemeModel
 import com.srdroid.memedb.domain.repository.MemeRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import retrofit2.HttpException
-import java.io.IOException
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-class GetMemeUseCase @Inject constructor(private val repository: MemeRepository) {
+class GetMemeUseCase @Inject constructor(
+    private val repository: MemeRepository,
+    private val errorHandler: ErrorHandler
+) {
 
     operator fun invoke(): Flow<Resource<List<MemeModel>>> = channelFlow {
-        var domainData = listOf<MemeModel>()
         try {
             val data =
                 repository.getMemes()
-            domainData =
-                if (data.success) data.data.memes.map { it.toDomainMeme() } else domainData
+            val domainData =
+                if (data.success) data.data.memes.map { it.toDomainMeme() } else emptyList()
             send(Resource.Success(data = domainData))
-        } catch (e: HttpException) {
+        } catch (t: Throwable) {
             send(
                 Resource.Error(
-                    message = e.localizedMessage ?: UNKNOWN_ERROR,
-                    data = domainData
-                )
-            )
-        } catch (e: IOException) {
-            send(
-                Resource.Error(
-                    message = e.localizedMessage ?: CONNECTIVITY_ERROR,
-                    data = domainData
-                )
-            )
-        } catch (e: Exception) {
-            send(
-                Resource.Error(
-                    message = e.localizedMessage ?: UNKNOWN_ERROR,
-                    data = domainData
+                    message = t.localizedMessage ?: UNKNOWN_ERROR,
+                    errorEntity = errorHandler.getError(t)
                 )
             )
         }
     }
-
-
 }

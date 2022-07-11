@@ -96,10 +96,10 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
      * Handle Error State
      */
     private fun onErrorState(it: MemeSearchState) {
-        if (it.error.isNotBlank()) {
+        if (it.error != null) {
             binding.nothingFound.visibility = View.GONE
             binding.progressSearch.visibility = View.GONE
-            Toast.makeText(requireContext(), it.error, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), it.error.message, Toast.LENGTH_SHORT).show()
         }
     }
 

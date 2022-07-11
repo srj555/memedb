@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.srdroid.memedb.core.Resource
 import com.srdroid.memedb.domain.use_case.GetMemeDetailsUseCase
+import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -12,7 +13,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MemeDetailsViewModel @Inject constructor(
     private val memeDetailsUseCase: GetMemeDetailsUseCase,
-    private val mapper: MemeMapper
+    private val mapper: MemeMapper,
+    private val errorViewMapper: ErrorViewMapper
 ) :
     ViewModel() {
 
@@ -28,7 +30,8 @@ class MemeDetailsViewModel @Inject constructor(
             .onEach {
                 when (it) {
                     is Resource.Error -> {
-                        _memeDetails.value = MemeDetailsState(error = it.message ?: "")
+                        _memeDetails.value =
+                            MemeDetailsState(error = errorViewMapper.mapToView(it.errorEntity))
                     }
                     is Resource.Success -> {
                         _memeDetails.value =
@@ -41,7 +44,8 @@ class MemeDetailsViewModel @Inject constructor(
                                     meme.id == id
                                 })
                     }
-                    else -> _memeDetails.value = MemeDetailsState(error = it.message ?: "")
+                    else -> _memeDetails.value =
+                        MemeDetailsState(error = errorViewMapper.mapToView(it.errorEntity))
                 }
             }.launchIn(viewModelScope)
     }

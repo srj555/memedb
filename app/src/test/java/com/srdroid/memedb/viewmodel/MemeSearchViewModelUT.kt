@@ -1,16 +1,18 @@
 package com.srdroid.memedb.viewmodel
 
-import com.srdroid.memedb.core.ID
+import android.content.Context
 import com.srdroid.memedb.core.MockResponse
 import com.srdroid.memedb.core.TestCoroutineRule
 import com.srdroid.memedb.domain.use_case.GetMemeUseCase
+import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
 import com.srdroid.memedb.presentation.meme_search.MemeSearchViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -29,12 +31,14 @@ class MemeSearchViewModelUT {
 
     private val getMemesUseCase = mockk<GetMemeUseCase>()
     private val mapper = MemeMapper()
+    private val mContextMock = mockk<Context>(relaxed = true)
+    private val errorViewMapper = ErrorViewMapper(mContextMock)
 
     private lateinit var memeSearchViewModel: MemeSearchViewModel
 
     @Before
     fun setUp() {
-        memeSearchViewModel = MemeSearchViewModel(getMemesUseCase, mapper)
+        memeSearchViewModel = MemeSearchViewModel(getMemesUseCase, mapper, errorViewMapper)
     }
 
     @Test
@@ -50,6 +54,15 @@ class MemeSearchViewModelUT {
     @Test
     fun given_Error_when_VMGetMeme_Expect_MemeStateError() = runTest {
         coEvery { getMemesUseCase.invoke() } returns MockResponse.getDataFailureMock()
+        // WHEN
+        memeSearchViewModel.getMemes()
+        // THEN
+        assertNotNull(memeSearchViewModel.getMemesState.value.error)
+    }
+
+    @Test
+    fun given_Error_when_VMGetMeme_Expect_MemeUnknownStateError() = runTest {
+        coEvery { getMemesUseCase.invoke() } returns MockResponse.getDataFailureUnknown()
         // WHEN
         memeSearchViewModel.getMemes()
         // THEN
