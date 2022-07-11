@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.srdroid.memedb.core.Resource
 import com.srdroid.memedb.domain.use_case.GetMemeUseCase
+import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
 import com.srdroid.memedb.presentation.model.MemeUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,9 +16,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MemeSearchViewModel @Inject constructor(
     private val getMemeUseCase: GetMemeUseCase,
-    private val mapper: MemeMapper
+    private val mapper: MemeMapper,
+    private val errorViewMapper: ErrorViewMapper
 ) : ViewModel() {
-
 
     private val _getMemesState = MutableStateFlow(MemeSearchState())
     val getMemesState: StateFlow<MemeSearchState> = _getMemesState
@@ -34,9 +35,11 @@ class MemeSearchViewModel @Inject constructor(
                     _getMemesState.value = MemeSearchState(data = _memesList)
                 }
                 is Resource.Error -> {
-                    _getMemesState.value = MemeSearchState(error = it.message ?: "")
+                    _getMemesState.value =
+                        MemeSearchState(error = errorViewMapper.mapToView(it.errorEntity))
                 }
-                else -> _getMemesState.value = MemeSearchState(error = it.message ?: "")
+                else -> _getMemesState.value =
+                    MemeSearchState(error = errorViewMapper.mapToView(it.errorEntity))
             }
         }.launchIn(viewModelScope)
     }
@@ -50,6 +53,5 @@ class MemeSearchViewModel @Inject constructor(
         _getMemesState.value =
             MemeSearchState(data = filteredData)
     }
-
 
 }

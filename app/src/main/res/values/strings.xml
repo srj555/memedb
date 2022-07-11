@@ -3,4 +3,7 @@
     <string name="items">Items :</string>
     <string name="instructions">Instructions :</string>
     <string name="memes_db">Memes Db</string>
+    <string name="network_error">Network Error</string>
+    <string name="unknown_error">Unknown</string>
+    <string name="service_error">Service Unavailable</string>
 </resources>
