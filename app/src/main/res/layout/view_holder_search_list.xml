@@ -7,7 +7,7 @@
 
         <variable
             name="meme"
-            type="com.srdroid.memedb.domain.model.MemeModel" />
+            type="com.srdroid.memedb.presentation.model.MemeUIModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -35,7 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:imageRatio="@{meme.imageAspectRation}"
                 app:urlToImage="@{meme.image}"
-                />
+                android:contentDescription="imageView" />
 
 
             <TextView

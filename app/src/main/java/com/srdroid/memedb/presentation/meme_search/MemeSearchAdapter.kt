@@ -1,27 +1,24 @@
 package com.srdroid.memedb.presentation.meme_search
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import com.srdroid.memedb.databinding.ViewHolderSearchListBinding
-import com.srdroid.memedb.domain.model.MemeModel
+import com.srdroid.memedb.presentation.model.MemeUIModel
 
 class MemeSearchAdapter : RecyclerView.Adapter<MemeSearchAdapter.MyViewHolder>() {
 
+    private var listener: ((MemeUIModel) -> Unit)? = null
 
-    private var listener: ((MemeModel) -> Unit)? = null
+    var list = mutableListOf<MemeUIModel>()
 
-    var list = mutableListOf<MemeModel>()
-
-    fun setContentList(list: MutableList<MemeModel>) {
+    @SuppressLint("NotifyDataSetChanged")
+    fun setContentList(list: MutableList<MemeUIModel>) {
         this.list = list
         notifyDataSetChanged()
     }
-
-
-    class MyViewHolder(val viewHolder: ViewHolderSearchListBinding) :
-        RecyclerView.ViewHolder(viewHolder.root)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -32,7 +29,7 @@ class MemeSearchAdapter : RecyclerView.Adapter<MemeSearchAdapter.MyViewHolder>()
         return MyViewHolder(binding)
     }
 
-    fun itemClickListener(l: (MemeModel) -> Unit) {
+    fun itemClickListener(l: (MemeUIModel) -> Unit) {
         listener = l
     }
 
@@ -51,4 +48,10 @@ class MemeSearchAdapter : RecyclerView.Adapter<MemeSearchAdapter.MyViewHolder>()
     override fun getItemCount(): Int {
         return this.list.size
     }
+
+    /**
+     * ViewHolder
+     */
+    class MyViewHolder(val viewHolder: ViewHolderSearchListBinding) :
+        RecyclerView.ViewHolder(viewHolder.root)
 }

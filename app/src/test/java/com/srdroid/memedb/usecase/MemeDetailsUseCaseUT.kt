@@ -4,13 +4,14 @@ import com.srdroid.memedb.core.ID
 import com.srdroid.memedb.core.MockResponse.getMemesModel
 import com.srdroid.memedb.core.TestCoroutineRule
 import com.srdroid.memedb.data.model.MemeDTO
-import com.srdroid.memedb.data.repository.MemeRepositoryImpl
+import com.srdroid.memedb.data.repository.MemeDetailsRepositoryImpl
 import com.srdroid.memedb.domain.model.MemeModel
-import com.srdroid.memedb.domain.use_case.GetMemeUseCase
+import com.srdroid.memedb.domain.use_case.GetMemeDetailsUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
@@ -28,31 +29,31 @@ import java.net.HttpURLConnection
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @ExperimentalCoroutinesApi
-class GetMemeUseCaseUT {
+class MemeDetailsUseCaseUT {
 
 
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()
 
-    private val memeSearchRepository = mockk<MemeRepositoryImpl>()
-    private val searchMemesUseCase by lazy {
-        GetMemeUseCase(
-            memeSearchRepository
+    private val memeDetailsRepository = mockk<MemeDetailsRepositoryImpl>()
+    private val memeDetailsUseCase by lazy {
+        GetMemeDetailsUseCase(
+            memeDetailsRepository
         )
     }
 
     @Test
-    fun when_UCGetMeme_Expect_Data() = runTest {
+    fun when_UCGetMemeDetails_Expect_Data() = runTest {
         // GIVEN
-        coEvery { memeSearchRepository.getMemes() } returns getMemesModel()
+        coEvery { memeDetailsRepository.getMemeDetails(ID) } returns getMemesModel()
         // WHEN
-        val first = searchMemesUseCase.invoke().first()
+        val first = memeDetailsUseCase.invoke(ID).first()
         // THEN
         assertEquals(first.data?.get(0)?.id, ID)
     }
 
     @Test
-    fun given_Error_when_UCGetMeme_Expect_EmptyData() = runTest {
+    fun given_Error_when_UCGetMemeDetails_Expect_Error() = runTest {
         // GIVEN
         val httpException = HttpException(
             Response.error<List<MemeDTO>>(
@@ -61,9 +62,9 @@ class GetMemeUseCaseUT {
             )
         )
         val domainData = listOf<MemeModel>()
-        coEvery { memeSearchRepository.getMemes() }.throws(httpException)
+        coEvery { memeDetailsRepository.getMemeDetails(ID) }.throws(httpException)
         // WHEN
-        val first = searchMemesUseCase.invoke().first()
+        val first = memeDetailsUseCase.invoke(ID).first()
         // THEN
         assertSame(domainData, first.data)
     }
