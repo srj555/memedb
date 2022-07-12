@@ -7,7 +7,7 @@
 
         <variable
             name="meme"
-            type="com.srdroid.memedb.presentation.model.MemeUIModel" />
+            type="com.srdroid.memedb.presentation.model.MemeItemUIState" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
