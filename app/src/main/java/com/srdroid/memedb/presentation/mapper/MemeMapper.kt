@@ -1,12 +1,12 @@
 package com.srdroid.memedb.presentation.mapper
 
 import com.srdroid.memedb.domain.model.MemeModel
-import com.srdroid.memedb.presentation.model.MemeUIModel
+import com.srdroid.memedb.presentation.model.MemeItemUIState
 import javax.inject.Inject
 
-class MemeMapper @Inject constructor() : Mapper<MemeUIModel, MemeModel> {
-    override fun mapToView(input: MemeModel): MemeUIModel {
-        return MemeUIModel(
+class MemeMapper @Inject constructor() : Mapper<MemeItemUIState, MemeModel> {
+    override fun mapToView(input: MemeModel): MemeItemUIState {
+        return MemeItemUIState(
             input.id,
             input.name,
             input.image,

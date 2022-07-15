@@ -1,6 +1,6 @@
 package com.srdroid.memedb.presentation.model
 
-data class MemeUIModel(
+data class MemeItemUIState(
     val id: String,
     val name: String,
     val image: String,

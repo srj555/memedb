@@ -6,7 +6,7 @@ import com.srdroid.memedb.core.Resource
 import com.srdroid.memedb.domain.use_case.GetMemeUseCase
 import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
-import com.srdroid.memedb.presentation.model.MemeUIModel
+import com.srdroid.memedb.presentation.model.MemeItemUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -22,7 +22,7 @@ class MemeSearchViewModel @Inject constructor(
 
     private val _getMemesState = MutableStateFlow(MemeSearchState())
     val getMemesState: StateFlow<MemeSearchState> = _getMemesState
-    private lateinit var _memesList: List<MemeUIModel>
+    private lateinit var _memesList: List<MemeItemUIState>
 
     fun getMemes() {
         getMemeUseCase().onStart {
