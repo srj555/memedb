@@ -16,10 +16,9 @@ class GetMemeDetailsUseCase @Inject constructor(
 ) {
 
     operator fun invoke(id: String): Flow<Resource<List<MemeModel>>> = channelFlow {
-        var domainData = listOf<MemeModel>()
         try {
             val data = repository.getMemeDetails(id)
-            domainData =
+            val domainData =
                 if (data.success) data.data.memes.map { it.toDomainMeme() } else emptyList()
             send(Resource.Success(data = domainData))
         } catch (t: Throwable) {
