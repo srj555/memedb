@@ -34,9 +34,11 @@ class MemeDetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // Invoke Service based on meme ID
         args.memeId?.let {
             viewModel.getMemeDetails(it)
         }
+        // Observe Data and update result
         updateUIBasedOnResult()
     }
 
