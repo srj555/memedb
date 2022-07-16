@@ -1,6 +1,6 @@
 package com.srdroid.memedb.core
 
-import com.srdroid.memedb.data.error.ErrorEntity
+import com.srdroid.memedb.domain.errorhandler.ErrorEntity
 import com.srdroid.memedb.data.model.Data
 import com.srdroid.memedb.data.model.Meme
 import com.srdroid.memedb.data.model.MemeDTO

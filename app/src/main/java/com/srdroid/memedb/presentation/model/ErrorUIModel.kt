@@ -1,6 +1,6 @@
 package com.srdroid.memedb.presentation.model
 
-import com.srdroid.memedb.domain.error.ErrorType
+import com.srdroid.memedb.domain.errorhandler.ErrorType
 
 data class ErrorUIModel(
    val message: String,

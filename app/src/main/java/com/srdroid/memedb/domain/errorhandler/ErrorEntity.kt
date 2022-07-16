@@ -1,4 +1,4 @@
-package com.srdroid.memedb.data.error
+package com.srdroid.memedb.domain.errorhandler
 
 
 sealed class ErrorEntity {
