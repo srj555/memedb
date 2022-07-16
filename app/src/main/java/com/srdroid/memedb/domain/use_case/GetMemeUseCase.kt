@@ -1,6 +1,6 @@
 package com.srdroid.memedb.domain.use_case
 
-import com.srdroid.memedb.core.Resource
+import com.srdroid.memedb.core.Result
 import com.srdroid.memedb.domain.mappers.MemeModelMapper
 import com.srdroid.memedb.domain.model.MemeModel
 import com.srdroid.memedb.domain.repository.MemeRepository
@@ -15,21 +15,21 @@ class GetMemeUseCase @Inject constructor(
     private val mapper: MemeModelMapper,
 ) {
 
-    operator fun invoke(): Flow<Resource<List<MemeModel>>> = channelFlow {
+    operator fun invoke(): Flow<Result<List<MemeModel>>> = channelFlow {
         val result =
             repository.getMemes()
         when (result) {
-            is Resource.Success -> {
+            is com.srdroid.memedb.core.Resource.Result.Success -> {
                 val domainData =
                     if (result.data?.success == true) result.data.data.memes.map {
                         mapper.mapToOut(
                             it
                         )
                     } else emptyList()
-                send(Resource.Success(data = domainData))
+                send(Result.Success(data = domainData))
             }
             else -> send(
-                Resource.Error(
+                Result.Error(
                     message = result.message ?: "",
                     errorEntity = result.errorEntity
                 )

@@ -13,7 +13,7 @@ const val ID = "1"
 
 object MockResponse {
 
-    fun getMemesModel(): Resource<MemeDTO> {
+    fun getMemesModel(): Result<MemeDTO> {
         val memesModel = Meme(
             box_count = 1,
             height = 2,
@@ -23,14 +23,14 @@ object MockResponse {
             width = 2
         )
         val listMemesModel: List<Meme> = listOf(memesModel)
-        return Resource.Success(data = MemeDTO(data = Data(listMemesModel), success = true))
+        return Result.Success(data = MemeDTO(data = Data(listMemesModel), success = true))
     }
 
-    fun getMemesModelFailure(): Resource<MemeDTO> {
-        return Resource.Error(message = "Network Error", errorEntity = ErrorEntity.Network)
+    fun getMemesModelFailure(): Result<MemeDTO> {
+        return Result.Error(message = "Network Error", errorEntity = ErrorEntity.Network)
     }
 
-    fun getResourceData(): Flow<Resource<List<MemeModel>>> = channelFlow {
+    fun getResourceData(): Flow<Result<List<MemeModel>>> = channelFlow {
         var domainData = listOf<MemeModel>()
         val mapper = MemeModelMapper()
         val data =
@@ -38,15 +38,15 @@ object MockResponse {
         domainData =
             if (data.data?.success == true) data.data?.data?.memes?.map { mapper.mapToOut(it) }
                 ?: domainData else emptyList()
-        send(Resource.Success(data = domainData))
+        send(Result.Success(data = domainData))
 
     }
 
 
-    fun getDataFailureMock(): Flow<Resource<List<MemeModel>>> = channelFlow {
+    fun getDataFailureMock(): Flow<Result<List<MemeModel>>> = channelFlow {
         val domainData = listOf<MemeModel>()
         send(
-            Resource.Error(
+            Result.Error(
                 message = "An Unknown error occurred",
                 data = domainData,
                 errorEntity = ErrorEntity.Network
@@ -54,10 +54,10 @@ object MockResponse {
         )
     }
 
-    fun getDataFailureUnknown(): Flow<Resource<List<MemeModel>>> = channelFlow {
+    fun getDataFailureUnknown(): Flow<Result<List<MemeModel>>> = channelFlow {
         val domainData = listOf<MemeModel>()
         send(
-            Resource.Loading(
+            Result.Loading(
                 data = domainData,
             )
         )

@@ -2,7 +2,6 @@ package com.srdroid.memedb.presentation.memedetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.srdroid.memedb.core.Resource
 import com.srdroid.memedb.domain.use_case.GetMemeDetailsUseCase
 import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
@@ -29,11 +28,11 @@ class MemeDetailsViewModel @Inject constructor(
         }
             .onEach {
                 when (it) {
-                    is Resource.Error -> {
+                    is com.srdroid.memedb.core.Resource.Result.Error -> {
                         _memeDetails.value =
                             MemeDetailsState(error = errorViewMapper.mapToOut(it.errorEntity))
                     }
-                    is Resource.Success -> {
+                    is com.srdroid.memedb.core.Resource.Result.Success -> {
                         _memeDetails.value =
                             MemeDetailsState(data = it.data?.map { memeData ->
                                 mapper.mapToOut(

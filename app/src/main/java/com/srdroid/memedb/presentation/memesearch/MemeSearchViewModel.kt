@@ -2,7 +2,6 @@ package com.srdroid.memedb.presentation.memesearch
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.srdroid.memedb.core.Resource
 import com.srdroid.memedb.domain.use_case.GetMemeUseCase
 import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
@@ -30,11 +29,11 @@ class MemeSearchViewModel @Inject constructor(
             _getMemesState.value = MemeSearchState(isLoading = true)
         }.onEach {
             when (it) {
-                is Resource.Success -> {
+                is com.srdroid.memedb.core.Resource.Result.Success -> {
                     _memesList = it.data?.map { memeData -> mapper.mapToOut(memeData) } ?: listOf()
                     _getMemesState.value = MemeSearchState(data = _memesList)
                 }
-                is Resource.Error -> {
+                is com.srdroid.memedb.core.Resource.Result.Error -> {
                     _getMemesState.value =
                         MemeSearchState(error = errorViewMapper.mapToOut(it.errorEntity))
                 }
