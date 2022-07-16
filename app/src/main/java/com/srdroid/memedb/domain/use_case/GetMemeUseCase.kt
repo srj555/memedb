@@ -19,7 +19,7 @@ class GetMemeUseCase @Inject constructor(
         val result =
             repository.getMemes()
         when (result) {
-            is com.srdroid.memedb.core.Resource.Result.Success -> {
+            is Result.Success -> {
                 val domainData =
                     if (result.data?.success == true) result.data.data.memes.map {
                         mapper.mapToOut(
