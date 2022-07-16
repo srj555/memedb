@@ -3,7 +3,7 @@ package com.srdroid.memedb.presentation.memedetails
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.srdroid.memedb.core.Result
-import com.srdroid.memedb.domain.use_case.GetMemeDetailsUseCase
+import com.srdroid.memedb.domain.usecase.GetMemeDetailsUseCase
 import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
 import dagger.hilt.android.lifecycle.HiltViewModel

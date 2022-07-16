@@ -3,7 +3,7 @@ package com.srdroid.memedb.viewmodel
 import android.content.Context
 import com.srdroid.memedb.core.MockResponse
 import com.srdroid.memedb.core.TestCoroutineRule
-import com.srdroid.memedb.domain.use_case.GetMemeUseCase
+import com.srdroid.memedb.domain.usecase.GetMemeUseCase
 import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
 import com.srdroid.memedb.presentation.memesearch.MemeSearchViewModel

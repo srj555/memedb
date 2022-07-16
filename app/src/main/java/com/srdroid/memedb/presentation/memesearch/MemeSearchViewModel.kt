@@ -3,7 +3,7 @@ package com.srdroid.memedb.presentation.memesearch
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.srdroid.memedb.core.Result
-import com.srdroid.memedb.domain.use_case.GetMemeUseCase
+import com.srdroid.memedb.domain.usecase.GetMemeUseCase
 import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
 import com.srdroid.memedb.presentation.model.MemeItemUIState

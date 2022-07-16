@@ -1,4 +1,4 @@
-package com.srdroid.memedb.domain.use_case
+package com.srdroid.memedb.domain.usecase
 
 import com.srdroid.memedb.core.Result
 import com.srdroid.memedb.domain.mappers.MemeModelMapper
