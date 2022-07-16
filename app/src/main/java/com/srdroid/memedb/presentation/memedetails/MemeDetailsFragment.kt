@@ -1,4 +1,4 @@
-package com.srdroid.memedb.presentation.meme_details
+package com.srdroid.memedb.presentation.memedetails
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,6 @@ import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.navArgs
 import com.srdroid.memedb.databinding.FragmentMemeDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 
 @AndroidEntryPoint

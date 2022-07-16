@@ -6,7 +6,7 @@ import com.srdroid.memedb.core.TestCoroutineRule
 import com.srdroid.memedb.domain.use_case.GetMemeUseCase
 import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
-import com.srdroid.memedb.presentation.meme_search.MemeSearchViewModel
+import com.srdroid.memedb.presentation.memesearch.MemeSearchViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi

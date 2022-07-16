@@ -1,4 +1,4 @@
-package com.srdroid.memedb.presentation.meme_details
+package com.srdroid.memedb.presentation.memedetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

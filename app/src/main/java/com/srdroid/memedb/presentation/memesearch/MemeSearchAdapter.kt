@@ -1,4 +1,4 @@
-package com.srdroid.memedb.presentation.meme_search
+package com.srdroid.memedb.presentation.memesearch
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

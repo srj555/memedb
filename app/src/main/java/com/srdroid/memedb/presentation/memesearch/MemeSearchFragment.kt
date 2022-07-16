@@ -1,4 +1,4 @@
-package com.srdroid.memedb.presentation.meme_search
+package com.srdroid.memedb.presentation.memesearch
 
 import android.os.Bundle
 import android.view.*
@@ -12,7 +12,6 @@ import com.srdroid.memedb.R
 import com.srdroid.memedb.databinding.FragmentMemeSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint

@@ -1,4 +1,4 @@
-package com.srdroid.memedb.presentation.meme_search
+package com.srdroid.memedb.presentation.memesearch
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
