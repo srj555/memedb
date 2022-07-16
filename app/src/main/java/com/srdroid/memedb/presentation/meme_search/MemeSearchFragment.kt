@@ -80,8 +80,8 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     /**
      * Handle Success State
      */
-    private fun onSuccessState(it: MemeSearchState) {
-        it.data?.let { result ->
+    private fun onSuccessState(uiState: MemeSearchState) {
+        uiState.data?.let { result ->
             if (result.isEmpty()) {
                 binding.nothingFound.visibility = View.VISIBLE
             } else
@@ -95,19 +95,19 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     /**
      * Handle Error State
      */
-    private fun onErrorState(it: MemeSearchState) {
-        if (it.error != null) {
+    private fun onErrorState(uiState: MemeSearchState) {
+        if (uiState.error != null) {
             binding.nothingFound.visibility = View.GONE
             binding.progressSearch.visibility = View.GONE
-            Toast.makeText(requireContext(), it.error.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), uiState.error.message, Toast.LENGTH_SHORT).show()
         }
     }
 
     /**
      * Handle Loading State
      */
-    private fun onLoadingState(it: MemeSearchState) {
-        if (it.isLoading) {
+    private fun onLoadingState(uiState: MemeSearchState) {
+        if (uiState.isLoading) {
             binding.nothingFound.visibility = View.GONE
             binding.progressSearch.visibility = View.VISIBLE
         }
