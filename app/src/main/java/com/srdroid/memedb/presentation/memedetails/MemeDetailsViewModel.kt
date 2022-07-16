@@ -15,40 +15,48 @@ class MemeDetailsViewModel @Inject constructor(
     private val memeDetailsUseCase: GetMemeDetailsUseCase,
     private val mapper: MemeMapper,
     private val errorViewMapper: ErrorViewMapper
-) :
-    ViewModel() {
+) : ViewModel() {
 
-
+    // Mutable State Flow
     private val _memeDetails = MutableStateFlow(MemeDetailsState())
+
+    // Immutable State flow observed from UI
     val memeDetails: StateFlow<MemeDetailsState> = _memeDetails
 
-
+    /**
+     * Get Meme details
+     */
     fun getMemeDetails(id: String) {
         memeDetailsUseCase(id).onStart {
+            // On Start Initial State , Update Loading State
             _memeDetails.value = MemeDetailsState(isLoading = true)
         }
             .onEach {
                 when (it) {
                     is Resource.Error -> {
+                        // Error State mapper
                         _memeDetails.value =
                             MemeDetailsState(error = errorViewMapper.mapToOut(it.errorEntity))
                     }
                     is Resource.Success -> {
+                        // On success get Meme Model from and map to List of MemeUIState Object
                         _memeDetails.value =
-                            MemeDetailsState(data = it.data?.map { memeData ->
-                                mapper.mapToOut(
-                                    memeData
-                                )
-                            }
+                            MemeDetailsState(data = it.data
+                                // map to Meme Details UI object
+                                ?.map { memeData ->
+                                    mapper.mapToOut(
+                                        memeData
+                                    )
+                                }
+                                // get the first element that matches the detail id
                                 ?.first { meme ->
                                     meme.id == id
                                 })
                     }
+                    // Default Error State mapper
                     else -> _memeDetails.value =
                         MemeDetailsState(error = errorViewMapper.mapToOut(it.errorEntity))
                 }
             }.launchIn(viewModelScope)
     }
-
-
 }

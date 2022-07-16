@@ -16,8 +16,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MemeDetailsFragment : Fragment() {
 
-    // ui
-    private lateinit var _binding: FragmentMemeDetailsBinding
+    // UI
+    private lateinit var binding: FragmentMemeDetailsBinding
 
     // view model
     private val viewModel: MemeDetailsViewModel by viewModels()
@@ -29,38 +29,65 @@ class MemeDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMemeDetailsBinding.inflate(inflater, container, false)
-        return _binding.root
+        binding = FragmentMemeDetailsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         args.memeId?.let {
             viewModel.getMemeDetails(it)
         }
-
         updateUIBasedOnResult()
-
     }
 
+    /**
+     * Collect Result
+     */
     private fun updateUIBasedOnResult() {
         lifecycle.coroutineScope.launchWhenCreated {
             viewModel.memeDetails.collect { result ->
-                if (result.isLoading) {
-                    updateProgress(true)
-                }
-                // error state
-                if (result.error != null) {
-                    updateProgress(false)
-                    Toast.makeText(requireContext(), result.error.message, Toast.LENGTH_SHORT)
-                        .show()
-                }
+                // on Loading State
+                onLoadingState(result)
+
                 // success state
-                result.data?.let {
-                    updateProgress(false)
-                    _binding.memeDetails = it
-                }
+                onSuccessState(result)
+
+                // on error state
+                onErrorState(result)
             }
 
+        }
+    }
+
+    /**
+     * On Success State
+     */
+    private fun onSuccessState(result: MemeDetailsState) {
+        // error state
+        result.data?.let {
+            updateProgress(false)
+            binding.memeDetails = it
+        }
+    }
+
+    /**
+     * On Loading State
+     */
+    private fun onLoadingState(result: MemeDetailsState) {
+        if (result.isLoading) {
+            updateProgress(true)
+        }
+    }
+
+    /**
+     * On Error State
+     */
+    private fun onErrorState(result: MemeDetailsState) {
+        // error state
+        if (result.error != null) {
+            updateProgress(false)
+            Toast.makeText(requireContext(), result.error.message, Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -69,11 +96,11 @@ class MemeDetailsFragment : Fragment() {
      */
     private fun updateProgress(showProgress: Boolean) {
         if (showProgress) {
-            _binding.detailsSV.visibility = View.INVISIBLE
-            _binding.progressDetail.visibility = View.VISIBLE
+            binding.detailsSV.visibility = View.INVISIBLE
+            binding.progressDetail.visibility = View.VISIBLE
         } else {
-            _binding.detailsSV.visibility = View.VISIBLE
-            _binding.progressDetail.visibility = View.INVISIBLE
+            binding.detailsSV.visibility = View.VISIBLE
+            binding.progressDetail.visibility = View.INVISIBLE
         }
     }
 

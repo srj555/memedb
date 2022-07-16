@@ -40,21 +40,28 @@ class MemeSearchViewModel @Inject constructor(
             })
         }.stateIn(viewModelScope, SharingStarted.Eagerly, MemeSearchState())
 
+    /**
+     * Method to get Memes
+     */
     fun getMemes() {
         getMemeUseCase().onStart {
-            // Update Loading State
+            // On Start Initial State , Update Loading State
             _getMemesState.value = MemeSearchState(isLoading = true)
         }.onEach {
             when (it) {
                 is Resource.Success -> {
+                    // On success get Meme Model from and map to List of MemeUIState Object
                     val memesList =
                         it.data?.map { memeData -> mapper.mapToOut(memeData) } ?: listOf()
+                    // Update Mutable State
                     _getMemesState.value = MemeSearchState(data = memesList)
                 }
                 is Resource.Error -> {
+                    // Map Error to Error View State
                     _getMemesState.value =
                         MemeSearchState(error = errorViewMapper.mapToOut(it.errorEntity))
                 }
+                // default Error State
                 else -> _getMemesState.value =
                     MemeSearchState(error = errorViewMapper.mapToOut(it.errorEntity))
             }

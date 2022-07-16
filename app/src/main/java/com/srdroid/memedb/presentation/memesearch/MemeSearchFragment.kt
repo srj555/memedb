@@ -38,7 +38,7 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMemeSearchBinding.inflate(inflater, container, false)
-        // get memes init
+        // get memes on init
         if (!this::rootView.isInitialized)
             getMemes()
         rootView = binding.root
@@ -125,6 +125,10 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
         }
     }
 
+    /**
+     * On Create Options Menu
+     * set Search query listener
+     */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_memes, menu)
         val searchView = (menu.findItem(R.id.menuSearch).actionView as SearchView)
@@ -132,6 +136,9 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
         searchView.setOnQueryTextListener(this)
     }
 
+    /**
+     * Menu Options Click Events
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menuRefresh -> {
