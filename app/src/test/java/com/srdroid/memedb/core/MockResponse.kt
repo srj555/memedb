@@ -4,7 +4,7 @@ import com.srdroid.memedb.data.error.ErrorEntity
 import com.srdroid.memedb.data.model.Data
 import com.srdroid.memedb.data.model.Meme
 import com.srdroid.memedb.data.model.MemeDTO
-import com.srdroid.memedb.data.model.toDomainMeme
+import com.srdroid.memedb.domain.mappers.MemeModelMapper
 import com.srdroid.memedb.domain.model.MemeModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -28,10 +28,11 @@ object MockResponse {
 
     fun getResourceData(): Flow<Resource<List<MemeModel>>> = channelFlow {
         var domainData = listOf<MemeModel>()
+        val mapper = MemeModelMapper()
         val data =
             getMemesModel()
         domainData =
-            if (data.success) data.data.memes.map { it.toDomainMeme() } else domainData
+            if (data.success) data.data.memes.map { mapper.mapToOut(it) } else domainData
         send(Resource.Success(data = domainData))
 
     }

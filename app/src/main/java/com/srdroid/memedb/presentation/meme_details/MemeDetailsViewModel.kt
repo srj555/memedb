@@ -31,12 +31,12 @@ class MemeDetailsViewModel @Inject constructor(
                 when (it) {
                     is Resource.Error -> {
                         _memeDetails.value =
-                            MemeDetailsState(error = errorViewMapper.mapToView(it.errorEntity))
+                            MemeDetailsState(error = errorViewMapper.mapToOut(it.errorEntity))
                     }
                     is Resource.Success -> {
                         _memeDetails.value =
                             MemeDetailsState(data = it.data?.map { memeData ->
-                                mapper.mapToView(
+                                mapper.mapToOut(
                                     memeData
                                 )
                             }
@@ -45,7 +45,7 @@ class MemeDetailsViewModel @Inject constructor(
                                 })
                     }
                     else -> _memeDetails.value =
-                        MemeDetailsState(error = errorViewMapper.mapToView(it.errorEntity))
+                        MemeDetailsState(error = errorViewMapper.mapToOut(it.errorEntity))
                 }
             }.launchIn(viewModelScope)
     }

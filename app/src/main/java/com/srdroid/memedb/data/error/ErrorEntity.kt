@@ -1,8 +1,7 @@
 package com.srdroid.memedb.data.error
 
-import com.srdroid.memedb.data.base.DataModel
 
-sealed class ErrorEntity : DataModel() {
+sealed class ErrorEntity {
 
     object Network : ErrorEntity()
 

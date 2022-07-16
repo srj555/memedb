@@ -31,15 +31,15 @@ class MemeSearchViewModel @Inject constructor(
         }.onEach {
             when (it) {
                 is Resource.Success -> {
-                    _memesList = it.data?.map { memeData -> mapper.mapToView(memeData) } ?: listOf()
+                    _memesList = it.data?.map { memeData -> mapper.mapToOut(memeData) } ?: listOf()
                     _getMemesState.value = MemeSearchState(data = _memesList)
                 }
                 is Resource.Error -> {
                     _getMemesState.value =
-                        MemeSearchState(error = errorViewMapper.mapToView(it.errorEntity))
+                        MemeSearchState(error = errorViewMapper.mapToOut(it.errorEntity))
                 }
                 else -> _getMemesState.value =
-                    MemeSearchState(error = errorViewMapper.mapToView(it.errorEntity))
+                    MemeSearchState(error = errorViewMapper.mapToOut(it.errorEntity))
             }
         }.launchIn(viewModelScope)
     }

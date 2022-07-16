@@ -6,6 +6,7 @@ import com.srdroid.memedb.core.TestCoroutineRule
 import com.srdroid.memedb.data.error.GeneralErrorHandlerImpl
 import com.srdroid.memedb.data.model.MemeDTO
 import com.srdroid.memedb.data.repository.MemeDetailsRepositoryImpl
+import com.srdroid.memedb.domain.mappers.MemeModelMapper
 import com.srdroid.memedb.domain.use_case.GetMemeDetailsUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -38,6 +39,7 @@ class MemeDetailsUseCaseUT {
     private val memeDetailsUseCase by lazy {
         GetMemeDetailsUseCase(
             memeDetailsRepository,
+            MemeModelMapper(),
             GeneralErrorHandlerImpl()
         )
     }

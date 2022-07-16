@@ -6,6 +6,7 @@ import com.srdroid.memedb.core.TestCoroutineRule
 import com.srdroid.memedb.data.error.GeneralErrorHandlerImpl
 import com.srdroid.memedb.data.model.MemeDTO
 import com.srdroid.memedb.data.repository.MemeRepositoryImpl
+import com.srdroid.memedb.domain.mappers.MemeModelMapper
 import com.srdroid.memedb.domain.use_case.GetMemeUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -34,9 +35,11 @@ class GetMemeUseCaseUT {
     val testCoroutineRule = TestCoroutineRule()
 
     private val memeSearchRepository = mockk<MemeRepositoryImpl>()
+
     private val searchMemesUseCase by lazy {
         GetMemeUseCase(
             memeSearchRepository,
+            MemeModelMapper(),
             GeneralErrorHandlerImpl()
         )
     }

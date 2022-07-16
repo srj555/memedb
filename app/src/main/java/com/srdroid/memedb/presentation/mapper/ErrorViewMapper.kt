@@ -2,6 +2,7 @@ package com.srdroid.memedb.presentation.mapper
 
 import android.content.Context
 import com.srdroid.memedb.R
+import com.srdroid.memedb.core.Mapper
 import com.srdroid.memedb.data.error.ErrorEntity
 import com.srdroid.memedb.domain.error.ErrorType
 import com.srdroid.memedb.presentation.model.ErrorUIModel
@@ -11,7 +12,7 @@ import javax.inject.Inject
 class ErrorViewMapper @Inject constructor(@ApplicationContext private val context: Context) :
     Mapper<ErrorUIModel, ErrorEntity?> {
 
-    override fun mapToView(input: ErrorEntity?): ErrorUIModel {
+    override fun mapToOut(input: ErrorEntity?): ErrorUIModel {
         return ErrorUIModel(
             message = getMessage(input),
             type = getErrorType(input)
