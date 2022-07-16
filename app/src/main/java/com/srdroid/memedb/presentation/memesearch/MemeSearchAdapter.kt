@@ -12,7 +12,7 @@ class MemeSearchAdapter : RecyclerView.Adapter<MemeSearchAdapter.MyViewHolder>()
 
     private var listener: ((MemeItemUIState) -> Unit)? = null
 
-    var list = mutableListOf<MemeItemUIState>()
+    private var list = mutableListOf<MemeItemUIState>()
 
     @SuppressLint("NotifyDataSetChanged")
     fun setContentList(list: MutableList<MemeItemUIState>) {
