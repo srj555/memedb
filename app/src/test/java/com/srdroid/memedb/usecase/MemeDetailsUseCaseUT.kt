@@ -7,7 +7,7 @@ import com.srdroid.memedb.domain.errorhandler.GeneralErrorHandlerImpl
 import com.srdroid.memedb.data.model.MemeDTO
 import com.srdroid.memedb.data.repository.MemeDetailsRepositoryImpl
 import com.srdroid.memedb.domain.mappers.MemeModelMapper
-import com.srdroid.memedb.domain.use_case.GetMemeDetailsUseCase
+import com.srdroid.memedb.domain.usecases.GetMemeDetailsUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
