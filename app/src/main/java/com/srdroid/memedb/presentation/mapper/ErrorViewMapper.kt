@@ -4,7 +4,7 @@ import android.content.Context
 import com.srdroid.memedb.R
 import com.srdroid.memedb.core.Mapper
 import com.srdroid.memedb.domain.errorhandler.ErrorEntity
-import com.srdroid.memedb.domain.errorhandler.ErrorType
+import com.srdroid.memedb.presentation.model.ErrorType
 import com.srdroid.memedb.presentation.model.ErrorUIModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
