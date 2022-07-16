@@ -3,8 +3,8 @@ package com.srdroid.memedb.presentation.mapper
 import android.content.Context
 import com.srdroid.memedb.R
 import com.srdroid.memedb.core.Mapper
-import com.srdroid.memedb.domain.errorhandler.ErrorEntity
-import com.srdroid.memedb.domain.errorhandler.ErrorType
+import com.srdroid.memedb.data.error.ErrorEntity
+import com.srdroid.memedb.domain.error.ErrorType
 import com.srdroid.memedb.presentation.model.ErrorUIModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject

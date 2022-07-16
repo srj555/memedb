@@ -2,7 +2,7 @@ package com.srdroid.memedb.domain.use_case
 
 import com.srdroid.memedb.core.AppConstants.UNKNOWN_ERROR
 import com.srdroid.memedb.core.Resource
-import com.srdroid.memedb.domain.errorhandler.ErrorHandler
+import com.srdroid.memedb.domain.error.ErrorHandler
 import com.srdroid.memedb.domain.mappers.MemeModelMapper
 import com.srdroid.memedb.domain.model.MemeModel
 import com.srdroid.memedb.domain.repository.MemeRepository

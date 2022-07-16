@@ -1,5 +1,6 @@
-package com.srdroid.memedb.domain.errorhandler
+package com.srdroid.memedb.data.error
 
+import com.srdroid.memedb.domain.error.ErrorHandler
 import okio.IOException
 import retrofit2.HttpException
 import java.net.HttpURLConnection
