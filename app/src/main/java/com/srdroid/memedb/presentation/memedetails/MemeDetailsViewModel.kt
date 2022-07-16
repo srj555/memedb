@@ -1,8 +1,8 @@
 package com.srdroid.memedb.presentation.memedetails
 
 import androidx.lifecycle.ViewModel
-import com.srdroid.memedb.core.Result
 import androidx.lifecycle.viewModelScope
+import com.srdroid.memedb.core.Result
 import com.srdroid.memedb.domain.use_case.GetMemeDetailsUseCase
 import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper

@@ -51,7 +51,8 @@ class MemeDetailsFragment : Fragment() {
                 // error state
                 if (result.error != null) {
                     updateProgress(false)
-                    Toast.makeText(requireContext(), result.error.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), result.error.message, Toast.LENGTH_SHORT)
+                        .show()
                 }
                 // success state
                 result.data?.let {
