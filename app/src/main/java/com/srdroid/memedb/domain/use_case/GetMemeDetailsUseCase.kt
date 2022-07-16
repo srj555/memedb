@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class GetMemeDetailsUseCase @Inject constructor(
     private val repository: MemeDetailsRepository,
-    private val mapper:MemeModelMapper,
+    private val mapper: MemeModelMapper,
     private val errorHandler: ErrorHandler
 ) {
 
