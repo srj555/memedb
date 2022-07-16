@@ -150,15 +150,18 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     /**
-     * On search query
+     * Update filter on submit of Search query
      */
     override fun onQueryTextSubmit(query: String?): Boolean {
-        query?.let { viewModel.filterMemes(it) }
+        query?.let { viewModel.filter = it }
         return true
     }
 
+    /**
+     * Update filter on each query text change
+     */
     override fun onQueryTextChange(newText: String?): Boolean {
-        newText?.let { viewModel.filterMemes(it) }
+        newText?.let { viewModel.filter = it }
         return true
     }
 
