@@ -5,7 +5,7 @@ import com.srdroid.memedb.data.api.MemeAPI
 import com.srdroid.memedb.data.error.GeneralErrorHandlerImpl
 import com.srdroid.memedb.data.repository.MemeDetailsRepositoryImpl
 import com.srdroid.memedb.data.repository.MemeRepositoryImpl
-import com.srdroid.memedb.domain.error.ErrorHandler
+import com.srdroid.memedb.data.error.ErrorHandler
 import com.srdroid.memedb.domain.repository.MemeDetailsRepository
 import com.srdroid.memedb.domain.repository.MemeRepository
 import dagger.Module
@@ -31,14 +31,17 @@ object HiltModule {
 
 
     @Provides
-    fun provideMemeSearchRepository(memeAPI: MemeAPI): MemeRepository {
-        return MemeRepositoryImpl(memeAPI)
+    fun provideMemeSearchRepository(memeAPI: MemeAPI, errorHandler: ErrorHandler): MemeRepository {
+        return MemeRepositoryImpl(memeAPI, errorHandler)
     }
 
 
     @Provides
-    fun provideMemeDetails(searchMemeAPI: MemeAPI): MemeDetailsRepository {
-        return MemeDetailsRepositoryImpl(searchMemeAPI)
+    fun provideMemeDetails(
+        searchMemeAPI: MemeAPI,
+        errorHandler: ErrorHandler
+    ): MemeDetailsRepository {
+        return MemeDetailsRepositoryImpl(searchMemeAPI, errorHandler)
     }
 
     @Provides

@@ -1,6 +1,7 @@
 package com.srdroid.memedb.usecase
 
 import com.srdroid.memedb.core.ID
+import com.srdroid.memedb.core.MockResponse
 import com.srdroid.memedb.core.MockResponse.getMemesModel
 import com.srdroid.memedb.core.TestCoroutineRule
 import com.srdroid.memedb.data.error.GeneralErrorHandlerImpl
@@ -40,7 +41,6 @@ class GetMemeUseCaseUT {
         GetMemeUseCase(
             memeSearchRepository,
             MemeModelMapper(),
-            GeneralErrorHandlerImpl()
         )
     }
 
@@ -57,13 +57,7 @@ class GetMemeUseCaseUT {
     @Test
     fun given_Error_when_UCGetMeme_Expect_EmptyData() = runTest {
         // GIVEN
-        val httpException = HttpException(
-            Response.error<List<MemeDTO>>(
-                HttpURLConnection.HTTP_NOT_FOUND,
-                mock()
-            )
-        )
-        coEvery { memeSearchRepository.getMemes() }.throws(httpException)
+        coEvery { memeSearchRepository.getMemes() } returns MockResponse.getMemesModelFailure()
         // WHEN
         val first = searchMemesUseCase.invoke().first()
         // THEN

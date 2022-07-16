@@ -13,7 +13,7 @@ const val ID = "1"
 
 object MockResponse {
 
-    fun getMemesModel(): MemeDTO {
+    fun getMemesModel(): Resource<MemeDTO> {
         val memesModel = Meme(
             box_count = 1,
             height = 2,
@@ -23,7 +23,11 @@ object MockResponse {
             width = 2
         )
         val listMemesModel: List<Meme> = listOf(memesModel)
-        return MemeDTO(data = Data(listMemesModel), success = true)
+        return Resource.Success(data = MemeDTO(data = Data(listMemesModel), success = true))
+    }
+
+    fun getMemesModelFailure(): Resource<MemeDTO> {
+        return Resource.Error(message = "Network Error", errorEntity = ErrorEntity.Network)
     }
 
     fun getResourceData(): Flow<Resource<List<MemeModel>>> = channelFlow {
@@ -32,10 +36,12 @@ object MockResponse {
         val data =
             getMemesModel()
         domainData =
-            if (data.success) data.data.memes.map { mapper.mapToOut(it) } else domainData
+            if (data.data?.success == true) data.data?.data?.memes?.map { mapper.mapToOut(it) }
+                ?: domainData else emptyList()
         send(Resource.Success(data = domainData))
 
     }
+
 
     fun getDataFailureMock(): Flow<Resource<List<MemeModel>>> = channelFlow {
         val domainData = listOf<MemeModel>()
