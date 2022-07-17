@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.srdroid.memedb.databinding.FragmentMemeDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -46,18 +49,19 @@ class MemeDetailsFragment : Fragment() {
      * Collect Result
      */
     private fun updateUIBasedOnResult() {
-        lifecycle.coroutineScope.launchWhenCreated {
-            viewModel.memeDetails.collect { result ->
-                // on Loading State
-                onLoadingState(result)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.memeDetails.collect { result ->
+                    // on Loading State
+                    onLoadingState(result)
 
-                // success state
-                onSuccessState(result)
+                    // success state
+                    onSuccessState(result)
 
-                // on error state
-                onErrorState(result)
+                    // on error state
+                    onErrorState(result)
+                }
             }
-
         }
     }
 

@@ -6,12 +6,15 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.srdroid.memedb.R
 import com.srdroid.memedb.databinding.FragmentMemeSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -64,14 +67,16 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
      */
     private fun updateUIBasedOnResult() {
         // Observe Result
-        lifecycle.coroutineScope.launchWhenStarted {
-            viewModel.getMemesState.collect {
-                // On Loading State
-                onLoadingState(it)
-                // On Error State
-                onErrorState(it)
-                //On Success State
-                onSuccessState(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.getMemesState.collect {
+                    // On Loading State
+                    onLoadingState(it)
+                    // On Error State
+                    onErrorState(it)
+                    //On Success State
+                    onSuccessState(it)
+                }
             }
         }
     }
