@@ -38,7 +38,7 @@ class MemeSearchViewModel @Inject constructor(
             MemeSearchState(data = memeSearchState.data?.filter {
                 it.name.lowercase().contains(filter.lowercase())
             })
-        }.stateIn(viewModelScope, SharingStarted.Eagerly, MemeSearchState())
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), MemeSearchState())
 
     /**
      * Method to get Memes
