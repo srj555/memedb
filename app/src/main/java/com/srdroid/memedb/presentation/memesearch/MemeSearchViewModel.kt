@@ -67,4 +67,12 @@ class MemeSearchViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
+    /**
+     * Method to reset filter to
+     * default
+     */
+    fun resetFilter() {
+        filter = ""
+    }
 }

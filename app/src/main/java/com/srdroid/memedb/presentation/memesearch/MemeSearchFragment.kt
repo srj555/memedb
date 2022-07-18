@@ -68,7 +68,7 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun updateUIBasedOnResult() {
         // Observe Result
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.getMemesState.collect {
                     // On Loading State
                     onLoadingState(it)
@@ -127,6 +127,8 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
                     it.id, it.name
                 )
             )
+            // reset filter on navigation
+            viewModel.resetFilter()
         }
     }
 
