@@ -20,7 +20,6 @@ import javax.inject.Singleton
 @Module
 object HiltModule {
 
-
     @Provides
     @Singleton
     fun provideMemeSearchAPI(): MemeAPI {
@@ -29,12 +28,10 @@ object HiltModule {
             .create(MemeAPI::class.java)
     }
 
-
     @Provides
     fun provideMemeSearchRepository(memeAPI: MemeAPI): MemeRepository {
         return MemeRepositoryImpl(memeAPI)
     }
-
 
     @Provides
     fun provideMemeDetails(searchMemeAPI: MemeAPI): MemeDetailsRepository {
@@ -45,5 +42,4 @@ object HiltModule {
     fun provideErrorHandler(): ErrorHandler {
         return GeneralErrorHandlerImpl()
     }
-
 }
