@@ -3,13 +3,16 @@ package com.srdroid.memedb.viewmodel
 import android.content.Context
 import com.srdroid.memedb.core.MockResponse
 import com.srdroid.memedb.core.TestCoroutineRule
-import com.srdroid.memedb.domain.use_case.GetMemeUseCase
+import com.srdroid.memedb.domain.usecases.GetMemeUseCase
 import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
-import com.srdroid.memedb.presentation.meme_search.MemeSearchViewModel
+import com.srdroid.memedb.presentation.memesearch.MemeSearchViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -46,18 +49,29 @@ class MemeSearchViewModelUT {
         coEvery { getMemesUseCase.invoke() } returns MockResponse.getResourceData()
         // WHEN
         memeSearchViewModel.getMemes()
-        // THEN
-        assertNotNull(memeSearchViewModel.getMemesState.value.data)
+        val job = launch(UnconfinedTestDispatcher()) {
+            // collect is needed for state flow
+            memeSearchViewModel.getMemesState.collect()
+            // THEN
+            assertNotNull(memeSearchViewModel.getMemesState.value.data)
+        }
+        job.cancel()
     }
 
 
     @Test
     fun given_Error_when_VMGetMeme_Expect_MemeStateError() = runTest {
+        // GIVEN Error State
         coEvery { getMemesUseCase.invoke() } returns MockResponse.getDataFailureMock()
         // WHEN
         memeSearchViewModel.getMemes()
-        // THEN
-        assertNotNull(memeSearchViewModel.getMemesState.value.error)
+        val job = launch(UnconfinedTestDispatcher()) {
+            // collect is needed for state flow
+            memeSearchViewModel.getMemesState.collect()
+            // THEN
+            assertNotNull(memeSearchViewModel.getMemesState.value.error)
+        }
+        job.cancel()
     }
 
     @Test
@@ -65,8 +79,13 @@ class MemeSearchViewModelUT {
         coEvery { getMemesUseCase.invoke() } returns MockResponse.getDataFailureUnknown()
         // WHEN
         memeSearchViewModel.getMemes()
-        // THEN
-        assertNotNull(memeSearchViewModel.getMemesState.value.error)
+        val job = launch(UnconfinedTestDispatcher()) {
+            // collect is needed for state flow
+            memeSearchViewModel.getMemesState.collect()
+            // THEN
+            assertNotNull(memeSearchViewModel.getMemesState.value.error)
+        }
+        job.cancel()
     }
 
     @Test
@@ -74,11 +93,17 @@ class MemeSearchViewModelUT {
         coEvery { getMemesUseCase.invoke() } returns MockResponse.getResourceData()
         // WHEN
         memeSearchViewModel.getMemes()
-        memeSearchViewModel.filterMemes("d")
-        // THEN
-        assertTrue(
-            memeSearchViewModel.getMemesState.value.data?.get(0)?.name?.contains("d") ?: false
-        )
+        memeSearchViewModel.filter = "d"
+        val job = launch(UnconfinedTestDispatcher()) {
+            // collect is needed for state flow
+            memeSearchViewModel.getMemesState.collect()
+            // THEN
+            assertTrue(
+                memeSearchViewModel.getMemesState.value.data?.get(0)?.name?.contains("d") ?: false
+            )
+        }
+        memeSearchViewModel.resetFilter()
+        job.cancel()
     }
 
 }

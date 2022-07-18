@@ -1,6 +1,6 @@
 package com.srdroid.memedb.core
 
-import com.srdroid.memedb.data.error.ErrorEntity
+import com.srdroid.memedb.domain.errorhandler.ErrorEntity
 
 
 sealed class Resource<T>(
