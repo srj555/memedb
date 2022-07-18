@@ -2,10 +2,10 @@ package com.srdroid.memedb.di
 
 import com.srdroid.memedb.core.AppConstants
 import com.srdroid.memedb.data.api.MemeAPI
-import com.srdroid.memedb.data.error.GeneralErrorHandlerImpl
 import com.srdroid.memedb.data.repository.MemeDetailsRepositoryImpl
 import com.srdroid.memedb.data.repository.MemeRepositoryImpl
-import com.srdroid.memedb.domain.error.ErrorHandler
+import com.srdroid.memedb.domain.errorhandler.ErrorHandler
+import com.srdroid.memedb.domain.errorhandler.GeneralErrorHandlerImpl
 import com.srdroid.memedb.domain.repository.MemeDetailsRepository
 import com.srdroid.memedb.domain.repository.MemeRepository
 import dagger.Module

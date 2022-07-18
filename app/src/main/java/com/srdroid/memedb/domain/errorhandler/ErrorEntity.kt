@@ -1,13 +1,12 @@
-package com.srdroid.memedb.data.error
+package com.srdroid.memedb.domain.errorhandler
 
-import com.srdroid.memedb.data.base.DataModel
 
-sealed class ErrorEntity : DataModel() {
+sealed class ErrorEntity {
 
     object Network : ErrorEntity()
 
     object NotFound : ErrorEntity()
-    
+
     object AccessDenied : ErrorEntity()
 
     object ServiceUnavailable : ErrorEntity()

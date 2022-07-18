@@ -1,4 +1,4 @@
-package com.srdroid.memedb.presentation.meme_search
+package com.srdroid.memedb.presentation.memesearch
 
 import android.os.Bundle
 import android.view.*
@@ -6,13 +6,15 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.srdroid.memedb.R
 import com.srdroid.memedb.databinding.FragmentMemeSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -39,7 +41,7 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMemeSearchBinding.inflate(inflater, container, false)
-        // get memes init
+        // get memes on init
         if (!this::rootView.isInitialized)
             getMemes()
         rootView = binding.root
@@ -65,14 +67,16 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
      */
     private fun updateUIBasedOnResult() {
         // Observe Result
-        lifecycle.coroutineScope.launchWhenStarted {
-            viewModel.getMemesState.collect {
-                // On Loading State
-                onLoadingState(it)
-                // On Error State
-                onErrorState(it)
-                //On Success State
-                onSuccessState(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.getMemesState.collect {
+                    // On Loading State
+                    onLoadingState(it)
+                    // On Error State
+                    onErrorState(it)
+                    //On Success State
+                    onSuccessState(it)
+                }
             }
         }
     }
@@ -80,8 +84,8 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     /**
      * Handle Success State
      */
-    private fun onSuccessState(it: MemeSearchState) {
-        it.data?.let { result ->
+    private fun onSuccessState(uiState: MemeSearchState) {
+        uiState.data?.let { result ->
             if (result.isEmpty()) {
                 binding.nothingFound.visibility = View.VISIBLE
             } else
@@ -95,19 +99,19 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     /**
      * Handle Error State
      */
-    private fun onErrorState(it: MemeSearchState) {
-        if (it.error != null) {
+    private fun onErrorState(uiState: MemeSearchState) {
+        if (uiState.error != null) {
             binding.nothingFound.visibility = View.GONE
             binding.progressSearch.visibility = View.GONE
-            Toast.makeText(requireContext(), it.error.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), uiState.error.message, Toast.LENGTH_SHORT).show()
         }
     }
 
     /**
      * Handle Loading State
      */
-    private fun onLoadingState(it: MemeSearchState) {
-        if (it.isLoading) {
+    private fun onLoadingState(uiState: MemeSearchState) {
+        if (uiState.isLoading) {
             binding.nothingFound.visibility = View.GONE
             binding.progressSearch.visibility = View.VISIBLE
         }
@@ -123,9 +127,15 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
                     it.id, it.name
                 )
             )
+            // reset filter on navigation
+            viewModel.resetFilter()
         }
     }
 
+    /**
+     * On Create Options Menu
+     * set Search query listener
+     */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_memes, menu)
         val searchView = (menu.findItem(R.id.menuSearch).actionView as SearchView)
@@ -133,6 +143,9 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
         searchView.setOnQueryTextListener(this)
     }
 
+    /**
+     * Menu Options Click Events
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menuRefresh -> {
@@ -151,15 +164,18 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     /**
-     * On search query
+     * Update filter on submit of Search query
      */
     override fun onQueryTextSubmit(query: String?): Boolean {
-        query?.let { viewModel.filterMemes(it) }
+        query?.let { viewModel.filter = it }
         return true
     }
 
+    /**
+     * Update filter on each query text change
+     */
     override fun onQueryTextChange(newText: String?): Boolean {
-        newText?.let { viewModel.filterMemes(it) }
+        newText?.let { viewModel.filter = it }
         return true
     }
 

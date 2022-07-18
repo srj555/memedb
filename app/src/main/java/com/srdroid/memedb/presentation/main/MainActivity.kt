@@ -21,9 +21,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // Add splash screen using SplashScreen API
         installSplashScreen()
+        // Set content view
         setContentView(R.layout.activity_main)
+        // Set toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+        // Set Up Nav Controller
         NavigationUI.setupWithNavController(toolbar, navController)
     }
 }

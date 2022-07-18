@@ -4,10 +4,10 @@ import android.content.Context
 import com.srdroid.memedb.core.ID
 import com.srdroid.memedb.core.MockResponse
 import com.srdroid.memedb.core.TestCoroutineRule
-import com.srdroid.memedb.domain.use_case.GetMemeDetailsUseCase
+import com.srdroid.memedb.domain.usecases.GetMemeDetailsUseCase
 import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
-import com.srdroid.memedb.presentation.meme_details.MemeDetailsViewModel
+import com.srdroid.memedb.presentation.memedetails.MemeDetailsViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
