@@ -6,6 +6,7 @@ import com.srdroid.memedb.core.Resource
 import com.srdroid.memedb.domain.usecases.GetMemeUseCase
 import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
+import com.srdroid.memedb.presentation.model.MemeItemUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -19,26 +20,14 @@ class MemeSearchViewModel @Inject constructor(
     private val errorViewMapper: ErrorViewMapper
 ) : ViewModel() {
 
-    // Filter flow that holds updates for filter
-    private val filterFlow = MutableStateFlow("")
-
-    // Filter value
-    var filter: String
-        get() = filterFlow.value
-        set(value) {
-            filterFlow.value = value
-        }
-
-    // Mutable State Flow
+    // Mutable UI State
     private val _getMemesState = MutableStateFlow(MemeSearchState())
 
-    //Combine MemeSearchState with filtered result
-    val getMemesState: StateFlow<MemeSearchState> =
-        _getMemesState.combine(filterFlow) { memeSearchState, filter ->
-            MemeSearchState(data = memeSearchState.data?.filter {
-                it.name.lowercase().contains(filter.lowercase())
-            })
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), MemeSearchState())
+    // Immutable UI State
+    val getMemesState: StateFlow<MemeSearchState> = _getMemesState
+
+    // MemeList
+    private lateinit var _memesList: List<MemeItemUIState>
 
     /**
      * Method to get Memes
@@ -51,10 +40,10 @@ class MemeSearchViewModel @Inject constructor(
             when (it) {
                 is Resource.Success -> {
                     // On success get Meme Model from and map to List of MemeUIState Object
-                    val memesList =
+                    _memesList =
                         it.data?.map { memeData -> mapper.mapToOut(memeData) } ?: listOf()
                     // Update Mutable State
-                    _getMemesState.value = MemeSearchState(data = memesList)
+                    _getMemesState.value = MemeSearchState(data = _memesList)
                 }
                 is Resource.Error -> {
                     // Map Error to Error View State
@@ -69,10 +58,15 @@ class MemeSearchViewModel @Inject constructor(
     }
 
     /**
-     * Method to reset filter to
-     * default
+     * Method to Update result based on filtered list
      */
-    fun resetFilter() {
-        filter = ""
+    fun filterMemes(s: String) {
+        // filter data
+        val filteredData = _memesList.filter {
+            it.name.lowercase().contains(s.lowercase())
+        }
+        // update state
+        _getMemesState.value =
+            MemeSearchState(data = filteredData)
     }
 }

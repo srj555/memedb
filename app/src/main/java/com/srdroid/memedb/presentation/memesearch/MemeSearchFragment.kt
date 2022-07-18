@@ -125,8 +125,9 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
                 )
             )
             // reset filter on navigation
-            viewModel.resetFilter()
+            viewModel.filterMemes("")
         }
+
     }
 
     /**
@@ -164,7 +165,7 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
      * Update filter on submit of Search query
      */
     override fun onQueryTextSubmit(query: String?): Boolean {
-        query?.let { viewModel.filter = it }
+        query?.let { viewModel.filterMemes(it) }
         return true
     }
 
@@ -172,7 +173,7 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
      * Update filter on each query text change
      */
     override fun onQueryTextChange(newText: String?): Boolean {
-        newText?.let { viewModel.filter = it }
+        newText?.let { viewModel.filterMemes(it) }
         return true
     }
 
