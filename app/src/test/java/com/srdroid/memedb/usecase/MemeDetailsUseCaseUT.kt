@@ -3,9 +3,9 @@ package com.srdroid.memedb.usecase
 import com.srdroid.memedb.core.ID
 import com.srdroid.memedb.core.MockResponse.getMemesModel
 import com.srdroid.memedb.core.TestCoroutineRule
-import com.srdroid.memedb.domain.errorhandler.GeneralErrorHandlerImpl
 import com.srdroid.memedb.data.model.MemeDTO
 import com.srdroid.memedb.data.repository.MemeDetailsRepositoryImpl
+import com.srdroid.memedb.domain.errorhandler.GeneralErrorHandlerImpl
 import com.srdroid.memedb.domain.mappers.MemeModelMapper
 import com.srdroid.memedb.domain.usecases.GetMemeDetailsUseCase
 import io.mockk.coEvery
@@ -45,17 +45,18 @@ class MemeDetailsUseCaseUT {
     }
 
     @Test
-    fun when_UCGetMemeDetails_Expect_Data() = runTest {
-        // GIVEN
-        coEvery { memeDetailsRepository.getMemeDetails(ID) } returns getMemesModel()
-        // WHEN
-        val first = memeDetailsUseCase.invoke(ID).first()
-        // THEN
-        assertEquals(first.data?.get(0)?.id, ID)
-    }
+    fun `Given response when invoke details use case expect ui state value contains id`() =
+        runTest {
+            // GIVEN
+            coEvery { memeDetailsRepository.getMemeDetails(ID) } returns getMemesModel()
+            // WHEN
+            val first = memeDetailsUseCase.invoke(ID).first()
+            // THEN
+            assertEquals(first.data?.get(0)?.id, ID)
+        }
 
     @Test
-    fun given_Error_when_UCGetMemeDetails_Expect_Error() = runTest {
+    fun `Given http error when invoke details use case expect null data`() = runTest {
         // GIVEN
         val httpException = HttpException(
             Response.error<List<MemeDTO>>(

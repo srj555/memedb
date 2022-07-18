@@ -42,7 +42,7 @@ class MemeSearchViewModelUT {
     }
 
     @Test
-    fun when_VMGetMeme_Expect_MemeStateData() = runTest {
+    fun `Given response data when getMemes expect getMemeState value`() = runTest {
         coEvery { getMemesUseCase.invoke() } returns MockResponse.getResourceData()
         // WHEN
         memeSearchViewModel.getMemes()
@@ -52,7 +52,7 @@ class MemeSearchViewModelUT {
 
 
     @Test
-    fun given_Error_when_VMGetMeme_Expect_MemeStateError() = runTest {
+    fun `Given error data when getMemes expect getMemeState error`() = runTest {
         coEvery { getMemesUseCase.invoke() } returns MockResponse.getDataFailureMock()
         // WHEN
         memeSearchViewModel.getMemes()
@@ -61,7 +61,7 @@ class MemeSearchViewModelUT {
     }
 
     @Test
-    fun given_Error_when_VMGetMeme_Expect_MemeUnknownStateError() = runTest {
+    fun `Given unknown error when getMemes expect getMemeState error`() = runTest {
         coEvery { getMemesUseCase.invoke() } returns MockResponse.getDataFailureUnknown()
         // WHEN
         memeSearchViewModel.getMemes()
@@ -70,7 +70,7 @@ class MemeSearchViewModelUT {
     }
 
     @Test
-    fun when_VMfilter_Expect_FilteredData() = runTest {
+    fun `Given search filter when getMemes expect result contains filtered data`() = runTest {
         coEvery { getMemesUseCase.invoke() } returns MockResponse.getResourceData()
         // WHEN
         memeSearchViewModel.getMemes()

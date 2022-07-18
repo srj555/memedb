@@ -3,9 +3,9 @@ package com.srdroid.memedb.usecase
 import com.srdroid.memedb.core.ID
 import com.srdroid.memedb.core.MockResponse.getMemesModel
 import com.srdroid.memedb.core.TestCoroutineRule
-import com.srdroid.memedb.domain.errorhandler.GeneralErrorHandlerImpl
 import com.srdroid.memedb.data.model.MemeDTO
 import com.srdroid.memedb.data.repository.MemeRepositoryImpl
+import com.srdroid.memedb.domain.errorhandler.GeneralErrorHandlerImpl
 import com.srdroid.memedb.domain.mappers.MemeModelMapper
 import com.srdroid.memedb.domain.usecases.GetMemeUseCase
 import io.mockk.coEvery
@@ -13,7 +13,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.mock
@@ -30,7 +31,6 @@ import java.net.HttpURLConnection
 @ExperimentalCoroutinesApi
 class GetMemeUseCaseUT {
 
-
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()
 
@@ -45,7 +45,7 @@ class GetMemeUseCaseUT {
     }
 
     @Test
-    fun when_UCGetMeme_Expect_Data() = runTest {
+    fun `Given response data when invoke memes use case expect result has data`() = runTest {
         // GIVEN
         coEvery { memeSearchRepository.getMemes() } returns getMemesModel()
         // WHEN
@@ -55,7 +55,7 @@ class GetMemeUseCaseUT {
     }
 
     @Test
-    fun given_Error_when_UCGetMeme_Expect_EmptyData() = runTest {
+    fun `Given http error when invoke memes use case expect null data`() = runTest {
         // GIVEN
         val httpException = HttpException(
             Response.error<List<MemeDTO>>(

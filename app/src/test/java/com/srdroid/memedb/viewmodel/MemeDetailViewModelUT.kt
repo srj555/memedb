@@ -43,7 +43,7 @@ class MemeDetailViewModelUT {
     }
 
     @Test
-    fun when_GetMemeDetails_Expect_MemeDetailsData() = runTest {
+    fun `Given response When get details of id Expect ui state value contains id`() = runTest {
         //GIVEN
         coEvery { getDetailsUseCase.invoke(ID) } returns MockResponse.getResourceData()
         // WHEN
@@ -54,7 +54,7 @@ class MemeDetailViewModelUT {
 
 
     @Test
-    fun given_Error_when_VMGetMemeDetails_Expect_MemeUnknownStateError() = runTest {
+    fun `Given unknown error when get details of id expect memeDetails state error`() = runTest {
         //GIVEN
         coEvery { getDetailsUseCase.invoke(ID) } returns MockResponse.getDataFailureUnknown()
         // WHEN
@@ -65,7 +65,7 @@ class MemeDetailViewModelUT {
 
 
     @Test
-    fun given_Error_when_GetMemeDetails_Expect_MemeDetailsError() = runTest {
+    fun `Given error when get details of id expect memeDetails state error`() = runTest {
         //GIVEN
         coEvery { getDetailsUseCase.invoke(ID) } returns MockResponse.getDataFailureMock()
         // WHEN
