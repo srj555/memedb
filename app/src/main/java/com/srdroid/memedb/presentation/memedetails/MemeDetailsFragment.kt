@@ -13,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.srdroid.memedb.databinding.FragmentMemeDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -42,16 +43,16 @@ class MemeDetailsFragment : Fragment() {
             viewModel.getMemeDetails(it)
         }
         // Observe Data and update result
-        updateUIBasedOnResult()
+        observeResultState()
     }
 
     /**
      * Collect Result
      */
-    private fun updateUIBasedOnResult() {
+    private fun observeResultState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.memeDetails.collect { result ->
+                viewModel.memeDetails.collectLatest { result ->
                     // on Loading State
                     onLoadingState(result)
 
@@ -90,7 +91,7 @@ class MemeDetailsFragment : Fragment() {
      */
     private fun onErrorState(result: MemeDetailsState) {
         // error state
-        if (result.error != null) {
+       result.error?.let{
             updateProgress(false)
             Toast.makeText(requireContext(), result.error.message, Toast.LENGTH_SHORT)
                 .show()

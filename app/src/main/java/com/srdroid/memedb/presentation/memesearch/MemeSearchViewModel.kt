@@ -17,8 +17,11 @@ import javax.inject.Inject
 class MemeSearchViewModel @Inject constructor(
     private val getMemeUseCase: GetMemeUseCase,
     private val mapper: MemeMapper,
-    private val errorViewMapper: ErrorViewMapper
+    private val errorViewMapper: ErrorViewMapper,
 ) : ViewModel() {
+
+    // state of initial service call
+    var initialServiceInvoked:Boolean = false
 
     // Mutable UI State
     private val _getMemesState = MutableStateFlow(MemeSearchState())
@@ -66,7 +69,8 @@ class MemeSearchViewModel @Inject constructor(
             it.name.lowercase().contains(s.lowercase())
         }
         // update state
-        _getMemesState.value =
-            MemeSearchState(data = filteredData)
+        _getMemesState.update {
+            it.copy(data = filteredData)
+        }
     }
 }

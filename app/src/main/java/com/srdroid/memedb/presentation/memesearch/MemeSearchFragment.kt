@@ -14,6 +14,7 @@ import com.srdroid.memedb.R
 import com.srdroid.memedb.databinding.FragmentMemeSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
@@ -26,7 +27,6 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     private val viewModel: MemeSearchViewModel by viewModels()
     // ui
     private lateinit var binding: FragmentMemeSearchBinding
-    private lateinit var rootView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,11 +38,7 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMemeSearchBinding.inflate(inflater, container, false)
-        // get memes on init
-        if (!this::rootView.isInitialized)
-            getMemes()
-        rootView = binding.root
-        return rootView
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,8 +48,15 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
             adapter = searchAdapter
         }
 
+        // invoke service call on load
+        // avoid network calls on fragment recreations
+        if (!viewModel.initialServiceInvoked) {
+            getMemes()
+            viewModel.initialServiceInvoked = true
+        }
+
         // observe and update UI based on result
-        updateUIBasedOnResult()
+        observeResultState()
 
         // set item click listener
         onItemClicked()
@@ -62,11 +65,11 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     /**
      * Update UI based on results
      */
-    private fun updateUIBasedOnResult() {
+    private fun observeResultState() {
         // Observe Result
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.getMemesState.collect {
+                viewModel.getMemesState.collectLatest {
                     // On Loading State
                     onLoadingState(it)
                     // On Error State
@@ -97,7 +100,7 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
      * Handle Error State
      */
     private fun onErrorState(uiState: MemeSearchState) {
-        if (uiState.error != null) {
+        uiState.error?.let {
             binding.nothingFound.visibility = View.GONE
             binding.progressSearch.visibility = View.GONE
             Toast.makeText(requireContext(), uiState.error.message, Toast.LENGTH_SHORT).show()
