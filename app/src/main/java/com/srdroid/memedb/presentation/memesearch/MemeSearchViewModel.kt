@@ -61,13 +61,16 @@ class MemeSearchViewModel @Inject constructor(
      * Method to Update result based on filtered list
      */
     fun filterMemes(s: String) {
-        // filter data
-        val filteredData = _memesList.filter {
-            it.name.lowercase().contains(s.lowercase())
-        }
-        // update state
-        _getMemesState.update {
-            it.copy(data = filteredData)
+        // check if initialised for lateinit property
+        if (this::_memesList.isInitialized) {
+            // filter data from meme list
+            val filteredData = _memesList.filter {
+                it.name.lowercase().contains(s.lowercase())
+            }
+            // update state with filtered data
+            _getMemesState.update {
+                it.copy(data = filteredData)
+            }
         }
     }
 }
