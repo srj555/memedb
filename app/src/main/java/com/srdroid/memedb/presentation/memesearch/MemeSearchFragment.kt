@@ -23,8 +23,10 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
     // search adapter
     private val searchAdapter = MemeSearchAdapter()
+
     // view model
     private val viewModel: MemeSearchViewModel by viewModels()
+
     // ui
     private lateinit var binding: FragmentMemeSearchBinding
 

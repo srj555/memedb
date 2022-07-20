@@ -91,7 +91,7 @@ class MemeDetailsFragment : Fragment() {
      */
     private fun onErrorState(result: MemeDetailsState) {
         // error state
-       result.error?.let{
+        result.error?.let {
             updateProgress(false)
             Toast.makeText(requireContext(), result.error.message, Toast.LENGTH_SHORT)
                 .show()

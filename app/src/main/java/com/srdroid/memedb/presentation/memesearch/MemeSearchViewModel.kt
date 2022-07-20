@@ -21,7 +21,7 @@ class MemeSearchViewModel @Inject constructor(
 ) : ViewModel() {
 
     // state of initial service call
-    var initialServiceInvoked:Boolean = false
+    var initialServiceInvoked: Boolean = false
 
     // Mutable UI State
     private val _getMemesState = MutableStateFlow(MemeSearchState())
@@ -53,9 +53,6 @@ class MemeSearchViewModel @Inject constructor(
                     _getMemesState.value =
                         MemeSearchState(error = errorViewMapper.mapToOut(it.errorEntity))
                 }
-                // default Error State
-                else -> _getMemesState.value =
-                    MemeSearchState(error = errorViewMapper.mapToOut(it.errorEntity))
             }
         }.launchIn(viewModelScope)
     }

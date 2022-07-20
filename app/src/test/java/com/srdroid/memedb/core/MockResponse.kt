@@ -47,13 +47,4 @@ object MockResponse {
             )
         )
     }
-
-    fun getDataFailureUnknown(): Flow<Resource<List<MemeModel>>> = channelFlow {
-        val domainData = listOf<MemeModel>()
-        send(
-            Resource.Loading(
-                data = domainData,
-            )
-        )
-    }
 }

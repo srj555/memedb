@@ -53,9 +53,6 @@ class MemeDetailsViewModel @Inject constructor(
                                     meme.id == id
                                 })
                     }
-                    // Default Error State mapper
-                    else -> _memeDetails.value =
-                        MemeDetailsState(error = errorViewMapper.mapToOut(it.errorEntity))
                 }
             }.launchIn(viewModelScope)
     }
