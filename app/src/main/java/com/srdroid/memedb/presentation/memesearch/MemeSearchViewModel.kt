@@ -17,8 +17,11 @@ import javax.inject.Inject
 class MemeSearchViewModel @Inject constructor(
     private val getMemeUseCase: GetMemeUseCase,
     private val mapper: MemeMapper,
-    private val errorViewMapper: ErrorViewMapper
+    private val errorViewMapper: ErrorViewMapper,
 ) : ViewModel() {
+
+    // state of initial service call
+    var initialServiceInvoked: Boolean = false
 
     // Mutable UI State
     private val _getMemesState = MutableStateFlow(MemeSearchState())
@@ -50,9 +53,6 @@ class MemeSearchViewModel @Inject constructor(
                     _getMemesState.value =
                         MemeSearchState(error = errorViewMapper.mapToOut(it.errorEntity))
                 }
-                // default Error State
-                else -> _getMemesState.value =
-                    MemeSearchState(error = errorViewMapper.mapToOut(it.errorEntity))
             }
         }.launchIn(viewModelScope)
     }
@@ -61,12 +61,16 @@ class MemeSearchViewModel @Inject constructor(
      * Method to Update result based on filtered list
      */
     fun filterMemes(s: String) {
-        // filter data
-        val filteredData = _memesList.filter {
-            it.name.lowercase().contains(s.lowercase())
+        // check if initialised for lateinit property
+        if (this::_memesList.isInitialized) {
+            // filter data from meme list
+            val filteredData = _memesList.filter {
+                it.name.lowercase().contains(s.lowercase())
+            }
+            // update state with filtered data
+            _getMemesState.update {
+                it.copy(data = filteredData)
+            }
         }
-        // update state
-        _getMemesState.value =
-            MemeSearchState(data = filteredData)
     }
 }

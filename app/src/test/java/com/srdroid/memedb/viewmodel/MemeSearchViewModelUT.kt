@@ -46,23 +46,14 @@ class MemeSearchViewModelUT {
         coEvery { getMemesUseCase.invoke() } returns MockResponse.getResourceData()
         // WHEN
         memeSearchViewModel.getMemes()
+        memeSearchViewModel.initialServiceInvoked = true
         // THEN
         assertNotNull(memeSearchViewModel.getMemesState.value.data)
     }
 
-
     @Test
     fun `Given error data when getMemes expect getMemeState error`() = runTest {
         coEvery { getMemesUseCase.invoke() } returns MockResponse.getDataFailureMock()
-        // WHEN
-        memeSearchViewModel.getMemes()
-        // THEN
-        assertNotNull(memeSearchViewModel.getMemesState.value.error)
-    }
-
-    @Test
-    fun `Given unknown error when getMemes expect getMemeState error`() = runTest {
-        coEvery { getMemesUseCase.invoke() } returns MockResponse.getDataFailureUnknown()
         // WHEN
         memeSearchViewModel.getMemes()
         // THEN

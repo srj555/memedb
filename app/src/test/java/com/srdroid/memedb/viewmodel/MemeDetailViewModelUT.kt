@@ -52,18 +52,6 @@ class MemeDetailViewModelUT {
         assertEquals(memeDetailsViewModel.memeDetails.value.data?.id, ID)
     }
 
-
-    @Test
-    fun `Given unknown error when get details of id expect memeDetails state error`() = runTest {
-        //GIVEN
-        coEvery { getDetailsUseCase.invoke(ID) } returns MockResponse.getDataFailureUnknown()
-        // WHEN
-        memeDetailsViewModel.getMemeDetails(ID)
-        // THEN
-        assertNotNull(memeDetailsViewModel.memeDetails.value.error)
-    }
-
-
     @Test
     fun `Given error when get details of id expect memeDetails state error`() = runTest {
         //GIVEN

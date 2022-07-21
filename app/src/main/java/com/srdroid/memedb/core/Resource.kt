@@ -13,6 +13,4 @@ sealed class Resource<T>(
 
     class Error<T>(message: String, data: T? = null, errorEntity: ErrorEntity? = null) :
         Resource<T>(data, message, errorEntity)
-
-    class Loading<T>(data: T? = null) : Resource<T>(data)
 }
