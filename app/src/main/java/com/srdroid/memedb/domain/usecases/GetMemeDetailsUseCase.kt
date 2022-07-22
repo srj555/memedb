@@ -1,7 +1,7 @@
 package com.srdroid.memedb.domain.usecases
 
-import com.srdroid.memedb.core.AppConstants
-import com.srdroid.memedb.core.Resource
+import com.srdroid.memedb.common.AppConstants
+import com.srdroid.memedb.common.Resource
 import com.srdroid.memedb.domain.errorhandler.ErrorHandler
 import com.srdroid.memedb.domain.mappers.MemeModelMapper
 import com.srdroid.memedb.domain.model.MemeModel

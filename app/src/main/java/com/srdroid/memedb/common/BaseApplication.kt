@@ -1,4 +1,4 @@
-package com.srdroid.memedb.core
+package com.srdroid.memedb.common
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

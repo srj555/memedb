@@ -2,7 +2,7 @@ package com.srdroid.memedb.presentation.mapper
 
 import android.content.Context
 import com.srdroid.memedb.R
-import com.srdroid.memedb.core.Mapper
+import com.srdroid.memedb.common.Mapper
 import com.srdroid.memedb.domain.errorhandler.ErrorEntity
 import com.srdroid.memedb.presentation.model.ErrorType
 import com.srdroid.memedb.presentation.model.ErrorUIModel

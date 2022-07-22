@@ -1,4 +1,4 @@
-package com.srdroid.memedb.core
+package com.srdroid.memedb.common
 
 /**
  * Mapper Base class

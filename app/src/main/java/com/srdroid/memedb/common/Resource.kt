@@ -1,4 +1,4 @@
-package com.srdroid.memedb.core
+package com.srdroid.memedb.common
 
 import com.srdroid.memedb.domain.errorhandler.ErrorEntity
 

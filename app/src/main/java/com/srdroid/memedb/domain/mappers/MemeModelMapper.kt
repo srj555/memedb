@@ -1,6 +1,6 @@
 package com.srdroid.memedb.domain.mappers
 
-import com.srdroid.memedb.core.Mapper
+import com.srdroid.memedb.common.Mapper
 import com.srdroid.memedb.data.model.Meme
 import com.srdroid.memedb.domain.model.MemeModel
 import javax.inject.Inject
