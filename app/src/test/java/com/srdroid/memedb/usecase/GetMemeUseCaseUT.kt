@@ -11,7 +11,9 @@ import com.srdroid.memedb.domain.usecases.GetMemeUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -46,17 +48,15 @@ class GetMemeUseCaseUT {
 
     @Test
     fun `Given response data when invoke memes use case expect result has data`() = runTest {
-        // GIVEN
         coEvery { memeSearchRepository.getMemes() } returns getMemesModel()
-        // WHEN
-        val first = searchMemesUseCase.invoke().first()
-        // THEN
-        assertEquals(first.data?.get(0)?.id, ID)
+
+        val first = searchMemesUseCase.invoke().drop(1).first()
+
+        assertEquals(ID,first.data?.get(0)?.id)
     }
 
     @Test
     fun `Given http error when invoke memes use case expect null data`() = runTest {
-        // GIVEN
         val httpException = HttpException(
             Response.error<List<MemeDTO>>(
                 HttpURLConnection.HTTP_NOT_FOUND,
@@ -64,9 +64,9 @@ class GetMemeUseCaseUT {
             )
         )
         coEvery { memeSearchRepository.getMemes() }.throws(httpException)
-        // WHEN
+
         val first = searchMemesUseCase.invoke().first()
-        // THEN
+
         assertNull(first.data)
     }
 }

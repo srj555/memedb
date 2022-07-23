@@ -7,7 +7,10 @@ import com.srdroid.memedb.domain.usecases.GetMemeDetailsUseCase
 import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,38 +20,28 @@ class MemeDetailsViewModel @Inject constructor(
     private val errorViewMapper: ErrorViewMapper
 ) : ViewModel() {
 
-    // Mutable State Flow
     private val _memeDetails = MutableStateFlow(MemeDetailsState())
-
-    // Immutable State flow observed from UI
     val memeDetails: StateFlow<MemeDetailsState> = _memeDetails
 
-    /**
-     * Get Meme details
-     */
     fun getMemeDetails(id: String) {
-        memeDetailsUseCase(id).onStart {
-            // On Start Initial State , Update Loading State
-            _memeDetails.value = MemeDetailsState(isLoading = true)
-        }
+        memeDetailsUseCase(id)
             .onEach {
                 when (it) {
+                    is Resource.Loading -> {
+                        _memeDetails.value = MemeDetailsState(isLoading = true)
+                    }
                     is Resource.Error -> {
-                        // Error State mapper
                         _memeDetails.value =
                             MemeDetailsState(error = errorViewMapper.mapToOut(it.errorEntity))
                     }
                     is Resource.Success -> {
-                        // On success get Meme Model from and map to List of MemeUIState Object
                         _memeDetails.value =
                             MemeDetailsState(data = it.data
-                                // map to Meme Details UI object
                                 ?.map { memeData ->
                                     mapper.mapToOut(
                                         memeData
                                     )
                                 }
-                                // get the first element that matches the detail id
                                 ?.first { meme ->
                                     meme.id == id
                                 })

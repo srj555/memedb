@@ -44,21 +44,21 @@ class MemeDetailViewModelUT {
 
     @Test
     fun `Given response When get details of id Expect ui state value contains id`() = runTest {
-        //GIVEN
+
         coEvery { getDetailsUseCase.invoke(ID) } returns MockResponse.getResourceData()
-        // WHEN
+
         memeDetailsViewModel.getMemeDetails(ID)
-        // THEN
+
         assertEquals(memeDetailsViewModel.memeDetails.value.data?.id, ID)
     }
 
     @Test
     fun `Given error when get details of id expect memeDetails state error`() = runTest {
-        //GIVEN
+
         coEvery { getDetailsUseCase.invoke(ID) } returns MockResponse.getDataFailureMock()
-        // WHEN
+
         memeDetailsViewModel.getMemeDetails(ID)
-        // THEN
+
         assertNotNull(memeDetailsViewModel.memeDetails.value.error)
 
     }

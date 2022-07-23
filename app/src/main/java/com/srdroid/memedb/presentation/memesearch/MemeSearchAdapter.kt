@@ -5,16 +5,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.srdroid.memedb.databinding.ViewHolderSearchListBinding
-import com.srdroid.memedb.presentation.model.MemeItemUIState
+import com.srdroid.memedb.presentation.model.MemeItemUIModel
 
 class MemeSearchAdapter : RecyclerView.Adapter<MemeSearchAdapter.MyViewHolder>() {
 
-    private var listener: ((MemeItemUIState) -> Unit)? = null
+    private var listener: ((MemeItemUIModel) -> Unit)? = null
 
-    var list = mutableListOf<MemeItemUIState>()
+    var list = mutableListOf<MemeItemUIModel>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setContentList(list: MutableList<MemeItemUIState>) {
+    fun setContentList(list: MutableList<MemeItemUIModel>) {
         this.list = list
         notifyDataSetChanged()
     }
@@ -31,7 +31,7 @@ class MemeSearchAdapter : RecyclerView.Adapter<MemeSearchAdapter.MyViewHolder>()
     /**
      * Item click listener
      */
-    fun itemClickListener(l: (MemeItemUIState) -> Unit) {
+    fun itemClickListener(l: (MemeItemUIModel) -> Unit) {
         listener = l
     }
 

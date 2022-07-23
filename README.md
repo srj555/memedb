@@ -1,5 +1,5 @@
 # Meme DB Android App
- - MVVP + Clean
+ - MVVM + Clean
  - Hilt DI
  - UT for use-case ,view model
 
