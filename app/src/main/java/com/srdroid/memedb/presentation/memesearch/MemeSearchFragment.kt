@@ -21,13 +21,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
-    // search adapter
     private val searchAdapter = MemeSearchAdapter()
-
-    // view model
     private val viewModel: MemeSearchViewModel by viewModels()
-
-    // ui
     private lateinit var binding: FragmentMemeSearchBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,48 +39,32 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        // set updater
         binding.memeSearchRecycler.apply {
             adapter = searchAdapter
         }
 
-        // invoke service call on load
-        // avoid network calls on fragment recreations
         if (!viewModel.initialServiceInvoked) {
             getMemes()
             viewModel.initialServiceInvoked = true
         }
 
-        // observe and update UI based on result
         observeResultState()
 
-        // set item click listener
         onItemClicked()
     }
 
-    /**
-     * Update UI based on results
-     */
     private fun observeResultState() {
-        // Observe Result
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.getMemesState.collectLatest {
-                    // On Loading State
                     onLoadingState(it)
-                    // On Error State
                     onErrorState(it)
-                    //On Success State
                     onSuccessState(it)
                 }
             }
         }
     }
 
-    /**
-     * Handle Success State
-     */
     private fun onSuccessState(uiState: MemeSearchState) {
         uiState.data?.let { result ->
             if (result.isEmpty()) {
@@ -98,9 +77,6 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
         }
     }
 
-    /**
-     * Handle Error State
-     */
     private fun onErrorState(uiState: MemeSearchState) {
         uiState.error?.let {
             binding.nothingFound.visibility = View.GONE
@@ -109,9 +85,6 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
         }
     }
 
-    /**
-     * Handle Loading State
-     */
     private fun onLoadingState(uiState: MemeSearchState) {
         if (uiState.isLoading) {
             binding.nothingFound.visibility = View.GONE
@@ -119,9 +92,6 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
         }
     }
 
-    /**
-     * Item Click listener
-     */
     private fun onItemClicked() {
         searchAdapter.itemClickListener {
             findNavController().navigate(
@@ -129,26 +99,17 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
                     it.id, it.name
                 )
             )
-            // reset filter on navigation
             viewModel.filterMemes("")
         }
 
     }
 
-    /**
-     * On Create Options Menu
-     * set Search query listener
-     */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_memes, menu)
         val searchView = (menu.findItem(R.id.menuSearch).actionView as SearchView)
-        // set listener
         searchView.setOnQueryTextListener(this)
     }
 
-    /**
-     * Menu Options Click Events
-     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menuRefresh -> {
@@ -159,27 +120,17 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
         }
     }
 
-    /**
-     * Invoke memes api
-     */
     private fun getMemes() {
         viewModel.getMemes()
     }
 
-    /**
-     * Update filter on submit of Search query
-     */
     override fun onQueryTextSubmit(query: String?): Boolean {
         query?.let { viewModel.filterMemes(it) }
         return true
     }
 
-    /**
-     * Update filter on each query text change
-     */
     override fun onQueryTextChange(newText: String?): Boolean {
         newText?.let { viewModel.filterMemes(it) }
         return true
     }
-
 }
