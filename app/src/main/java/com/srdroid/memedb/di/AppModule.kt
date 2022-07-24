@@ -1,13 +1,8 @@
 package com.srdroid.memedb.di
 
 import com.srdroid.memedb.core.AppConstants
-import com.srdroid.memedb.data.api.MemeAPI
-import com.srdroid.memedb.data.repository.MemeDetailsRepositoryImpl
-import com.srdroid.memedb.data.repository.MemeRepositoryImpl
 import com.srdroid.memedb.domain.errorhandler.ErrorHandler
 import com.srdroid.memedb.domain.errorhandler.GeneralErrorHandlerImpl
-import com.srdroid.memedb.domain.repository.MemeDetailsRepository
-import com.srdroid.memedb.domain.repository.MemeRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,24 +13,13 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-object HiltModule {
+object AppModule {
 
     @Provides
     @Singleton
-    fun provideMemeSearchAPI(): MemeAPI {
+    fun provideRetrofit(): Retrofit {
         return Retrofit.Builder().baseUrl(AppConstants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create()).build()
-            .create(MemeAPI::class.java)
-    }
-
-    @Provides
-    fun provideMemeSearchRepository(memeAPI: MemeAPI): MemeRepository {
-        return MemeRepositoryImpl(memeAPI)
-    }
-
-    @Provides
-    fun provideMemeDetails(searchMemeAPI: MemeAPI): MemeDetailsRepository {
-        return MemeDetailsRepositoryImpl(searchMemeAPI)
     }
 
     @Provides
