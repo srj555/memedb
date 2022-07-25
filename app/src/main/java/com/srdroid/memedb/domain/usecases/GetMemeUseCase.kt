@@ -20,18 +20,19 @@ class GetMemeUseCase @Inject constructor(
 
     operator fun invoke(): Flow<Resource<List<MemeModel>>> = channelFlow {
         try {
-            // get meme from repo
+            send(Resource.Loading())
+
             val data =
                 repository.getMemes()
-            // map to domain data model based on result
+
             val domainData =
                 if (data.success) data.data.memes
                     .map { mapper.mapToOut(it) }
                 else emptyList()
-            // update result
+
             send(Resource.Success(data = domainData))
         } catch (t: Throwable) {
-            // handle error using the error handler implementation
+
             send(
                 Resource.Error(
                     message = t.localizedMessage ?: UNKNOWN_ERROR,

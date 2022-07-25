@@ -25,7 +25,6 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class MemeSearchViewModelUT {
 
-
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()
 
@@ -44,29 +43,29 @@ class MemeSearchViewModelUT {
     @Test
     fun `Given response data when getMemes expect getMemeState value`() = runTest {
         coEvery { getMemesUseCase.invoke() } returns MockResponse.getResourceData()
-        // WHEN
+
         memeSearchViewModel.getMemes()
         memeSearchViewModel.initialServiceInvoked = true
-        // THEN
+
         assertNotNull(memeSearchViewModel.getMemesState.value.data)
     }
 
     @Test
     fun `Given error data when getMemes expect getMemeState error`() = runTest {
         coEvery { getMemesUseCase.invoke() } returns MockResponse.getDataFailureMock()
-        // WHEN
+
         memeSearchViewModel.getMemes()
-        // THEN
+
         assertNotNull(memeSearchViewModel.getMemesState.value.error)
     }
 
     @Test
     fun `Given search filter when getMemes expect result contains filtered data`() = runTest {
         coEvery { getMemesUseCase.invoke() } returns MockResponse.getResourceData()
-        // WHEN
+
         memeSearchViewModel.getMemes()
         memeSearchViewModel.filterMemes("d")
-        // THEN
+
         assertTrue(
             memeSearchViewModel.getMemesState.value.data?.get(0)?.name?.contains("d") ?: false
         )

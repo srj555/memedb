@@ -20,13 +20,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MemeDetailsFragment : Fragment() {
 
-    // UI
     private lateinit var binding: FragmentMemeDetailsBinding
-
-    // view model
     private val viewModel: MemeDetailsViewModel by viewModels()
-
-    // nav args
     private val args: MemeDetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -38,59 +33,38 @@ class MemeDetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // Invoke Service based on meme ID
         args.memeId?.let {
             viewModel.getMemeDetails(it)
         }
-        // Observe Data and update result
         observeResultState()
     }
 
-    /**
-     * Collect Result
-     */
     private fun observeResultState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.memeDetails.collectLatest { result ->
-                    // on Loading State
                     onLoadingState(result)
-
-                    // success state
                     onSuccessState(result)
-
-                    // on error state
                     onErrorState(result)
                 }
             }
         }
     }
 
-    /**
-     * On Success State
-     */
     private fun onSuccessState(result: MemeDetailsState) {
-        // error state
         result.data?.let {
             updateProgress(false)
             binding.memeDetails = it
         }
     }
 
-    /**
-     * On Loading State
-     */
     private fun onLoadingState(result: MemeDetailsState) {
         if (result.isLoading) {
             updateProgress(true)
         }
     }
 
-    /**
-     * On Error State
-     */
     private fun onErrorState(result: MemeDetailsState) {
-        // error state
         result.error?.let {
             updateProgress(false)
             Toast.makeText(requireContext(), result.error.message, Toast.LENGTH_SHORT)
@@ -98,9 +72,6 @@ class MemeDetailsFragment : Fragment() {
         }
     }
 
-    /**
-     * Detail progress UI update
-     */
     private fun updateProgress(showProgress: Boolean) {
         if (showProgress) {
             binding.detailsSV.visibility = View.INVISIBLE
@@ -110,5 +81,4 @@ class MemeDetailsFragment : Fragment() {
             binding.progressDetail.visibility = View.INVISIBLE
         }
     }
-
 }
