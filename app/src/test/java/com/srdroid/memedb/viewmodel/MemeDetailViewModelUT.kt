@@ -39,7 +39,7 @@ class MemeDetailViewModelUT {
 
     @Before
     fun setUp() {
-        memeDetailsViewModel = MemeDetailsViewModel(getDetailsUseCase, mapper,errorViewMapper)
+        memeDetailsViewModel = MemeDetailsViewModel(getDetailsUseCase, mapper, errorViewMapper)
     }
 
     @Test

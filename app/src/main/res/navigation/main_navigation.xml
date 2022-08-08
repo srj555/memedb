@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/memeDetailsFragment"
         android:name="com.srdroid.memedb.presentation.memedetails.MemeDetailsFragment"
-        android:label="{title} " >
+        android:label="{title} ">
         <argument
             android:name="meme_id"
             android:defaultValue="@null"
@@ -27,6 +27,6 @@
             android:name="title"
             android:defaultValue="@null"
             app:argType="string"
-            app:nullable="true"/>
+            app:nullable="true" />
     </fragment>
 </navigation>

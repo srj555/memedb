@@ -3,7 +3,6 @@ package com.srdroid.memedb.usecase
 import com.srdroid.memedb.core.ID
 import com.srdroid.memedb.core.MockResponse.getMemesModel
 import com.srdroid.memedb.core.TestCoroutineRule
-import com.srdroid.memedb.data.model.MemeDTO
 import com.srdroid.memedb.data.repository.MemeRepositoryImpl
 import com.srdroid.memedb.domain.errorhandler.GeneralErrorHandlerImpl
 import com.srdroid.memedb.domain.mappers.MemeModelMapper
@@ -18,10 +17,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.kotlin.mock
-import retrofit2.HttpException
-import retrofit2.Response
-import java.net.HttpURLConnection
 
 
 /**
@@ -51,7 +46,7 @@ class GetMemeUseCaseUT {
 
         val first = searchMemesUseCase.invoke().drop(1).first()
 
-        assertEquals(ID,first.data?.get(0)?.id)
+        assertEquals(ID, first.data?.get(0)?.id)
     }
 
     @Test

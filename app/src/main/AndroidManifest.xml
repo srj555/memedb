@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.srdroid.memedb">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".core.BaseApplication"
@@ -12,8 +13,8 @@
         android:theme="@style/Theme.MySplash">
         <activity
             android:name=".presentation.main.MainActivity"
-            android:screenOrientation="portrait"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

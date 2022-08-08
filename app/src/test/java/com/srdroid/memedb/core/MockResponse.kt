@@ -1,9 +1,9 @@
 package com.srdroid.memedb.core
 
-import com.srdroid.memedb.domain.errorhandler.ErrorEntity
 import com.srdroid.memedb.data.model.Data
 import com.srdroid.memedb.data.model.Meme
 import com.srdroid.memedb.data.model.MemeDTO
+import com.srdroid.memedb.domain.errorhandler.ErrorEntity
 import com.srdroid.memedb.domain.mappers.MemeModelMapper
 import com.srdroid.memedb.domain.model.MemeModel
 import kotlinx.coroutines.flow.Flow
