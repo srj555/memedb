@@ -13,7 +13,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -57,13 +56,8 @@ class GetMemeUseCaseUT {
 
     @Test
     fun `Given http error when invoke memes use case expect null data`() = runTest {
-        val httpException = HttpException(
-            Response.error<List<MemeDTO>>(
-                HttpURLConnection.HTTP_NOT_FOUND,
-                mock()
-            )
-        )
-        coEvery { memeSearchRepository.getMemes() }.throws(httpException)
+
+        coEvery { memeSearchRepository.getMemes() }.throws(Throwable())
 
         val first = searchMemesUseCase.invoke().first()
 

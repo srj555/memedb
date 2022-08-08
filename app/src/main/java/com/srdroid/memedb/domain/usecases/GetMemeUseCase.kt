@@ -8,7 +8,8 @@ import com.srdroid.memedb.domain.model.MemeModel
 import com.srdroid.memedb.domain.repository.MemeRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -18,27 +19,26 @@ class GetMemeUseCase @Inject constructor(
     private val errorHandler: ErrorHandler
 ) {
 
-    operator fun invoke(): Flow<Resource<List<MemeModel>>> = channelFlow {
-        try {
-            send(Resource.Loading())
+    operator fun invoke(): Flow<Resource<List<MemeModel>>> = flow {
 
-            val data =
-                repository.getMemes()
+        emit(Resource.Loading())
 
-            val domainData =
-                if (data.success) data.data.memes
-                    .map { mapper.mapToOut(it) }
-                else emptyList()
+        val data =
+            repository.getMemes()
 
-            send(Resource.Success(data = domainData))
-        } catch (t: Throwable) {
+        val domainData =
+            if (data.success) data.data.memes
+                .map { mapper.mapToOut(it) }
+            else emptyList()
 
-            send(
-                Resource.Error(
-                    message = t.localizedMessage ?: UNKNOWN_ERROR,
-                    errorEntity = errorHandler.getError(t)
-                )
+        emit(Resource.Success(data = domainData))
+
+    }.catch { throwable ->
+        emit(
+            Resource.Error(
+                message = throwable.localizedMessage ?: UNKNOWN_ERROR,
+                errorEntity = errorHandler.getError(throwable)
             )
-        }
+        )
     }
 }
