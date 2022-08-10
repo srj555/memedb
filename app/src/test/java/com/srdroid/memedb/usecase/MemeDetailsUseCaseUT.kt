@@ -9,10 +9,12 @@ import com.srdroid.memedb.domain.mappers.MemeModelMapper
 import com.srdroid.memedb.domain.usecases.GetMemeDetailsUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
+import io.mockk.unmockkAll
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -50,5 +52,10 @@ class MemeDetailsUseCaseUT {
         val first = memeDetailsUseCase.invoke(ID).first()
 
         Assert.assertNull(first.data)
+    }
+
+    @After
+    fun tearDown(){
+        unmockkAll()
     }
 }

@@ -10,8 +10,10 @@ import com.srdroid.memedb.presentation.mapper.MemeMapper
 import com.srdroid.memedb.presentation.memedetails.MemeDetailsViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
+import io.mockk.unmockkAll
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -53,6 +55,11 @@ class MemeDetailViewModelUT {
 
         assertNotNull(memeDetailsViewModel.memeDetails.value.error)
 
+    }
+
+    @After
+    fun tearDown(){
+        unmockkAll()
     }
 
 }

@@ -9,8 +9,10 @@ import com.srdroid.memedb.presentation.mapper.MemeMapper
 import com.srdroid.memedb.presentation.memesearch.MemeSearchViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
+import io.mockk.unmockkAll
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -65,6 +67,11 @@ class MemeSearchViewModelUT {
         assertTrue(
             memeSearchViewModel.getMemesState.value.data?.get(0)?.name?.contains("d") ?: false
         )
+    }
+
+    @After
+    fun tearDown(){
+        unmockkAll()
     }
 
 }
