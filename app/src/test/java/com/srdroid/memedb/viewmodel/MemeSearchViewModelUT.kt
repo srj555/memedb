@@ -13,7 +13,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -33,11 +32,8 @@ class MemeSearchViewModelUT {
     private val mContextMock = mockk<Context>(relaxed = true)
     private val errorViewMapper = ErrorViewMapper(mContextMock)
 
-    private lateinit var memeSearchViewModel: MemeSearchViewModel
-
-    @Before
-    fun setUp() {
-        memeSearchViewModel = MemeSearchViewModel(getMemesUseCase, mapper, errorViewMapper)
+    private val memeSearchViewModel: MemeSearchViewModel by lazy {
+        MemeSearchViewModel(getMemesUseCase, mapper, errorViewMapper)
     }
 
     @Test

@@ -19,11 +19,6 @@ import org.junit.Rule
 import org.junit.Test
 
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 @ExperimentalCoroutinesApi
 class GetMemeUseCaseUT {
 
@@ -51,7 +46,6 @@ class GetMemeUseCaseUT {
 
     @Test
     fun `Given http error when invoke memes use case expect null data`() = runTest {
-
         coEvery { memeSearchRepository.getMemes() }.throws(Throwable())
 
         val first = searchMemesUseCase.invoke().first()

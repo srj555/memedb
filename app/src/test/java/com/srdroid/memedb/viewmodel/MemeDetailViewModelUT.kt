@@ -18,14 +18,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 @ExperimentalCoroutinesApi
 class MemeDetailViewModelUT {
-
 
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()
@@ -44,7 +38,6 @@ class MemeDetailViewModelUT {
 
     @Test
     fun `Given response When get details of id Expect ui state value contains id`() = runTest {
-
         coEvery { getDetailsUseCase.invoke(ID) } returns MockResponse.getResourceData()
 
         memeDetailsViewModel.getMemeDetails(ID)
@@ -54,7 +47,6 @@ class MemeDetailViewModelUT {
 
     @Test
     fun `Given error when get details of id expect memeDetails state error`() = runTest {
-
         coEvery { getDetailsUseCase.invoke(ID) } returns MockResponse.getDataFailureMock()
 
         memeDetailsViewModel.getMemeDetails(ID)
