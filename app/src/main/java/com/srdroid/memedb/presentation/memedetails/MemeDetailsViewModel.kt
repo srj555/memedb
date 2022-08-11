@@ -22,7 +22,8 @@ class MemeDetailsViewModel @Inject constructor(
     private val errorViewMapper: ErrorViewMapper
 ) : ViewModel() {
 
-    private val _memeDetailsUiState = MutableStateFlow(UiState<MemeItemUIModel>())
+    private val _memeDetailsUiState =
+        MutableStateFlow(UiState<MemeItemUIModel>(isInitialState = true))
     val memeDetailsUiState: StateFlow<UiState<MemeItemUIModel>> = _memeDetailsUiState
 
     fun getMemeDetails(id: String) {

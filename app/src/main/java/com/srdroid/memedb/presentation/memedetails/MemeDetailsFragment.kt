@@ -35,9 +35,6 @@ class MemeDetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        args.memeId?.let {
-            viewModel.getMemeDetails(it)
-        }
         observeResultState()
     }
 
@@ -45,10 +42,19 @@ class MemeDetailsFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.memeDetailsUiState.collectLatest { result ->
+                    onInitialState(result)
                     onLoadingState(result)
                     onSuccessState(result)
                     onErrorState(result)
                 }
+            }
+        }
+    }
+
+    private fun onInitialState(result: UiState<MemeItemUIModel>) {
+        if (result.isInitialState) {
+            args.memeId?.let {
+                viewModel.getMemeDetails(it)
             }
         }
     }

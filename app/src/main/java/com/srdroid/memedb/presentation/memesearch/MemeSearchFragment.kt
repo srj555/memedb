@@ -45,11 +45,6 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
             adapter = searchAdapter
         }
 
-        if (!viewModel.initialServiceInvoked) {
-            getMemes()
-            viewModel.initialServiceInvoked = true
-        }
-
         observeResultState()
 
         onItemClicked()
@@ -58,12 +53,19 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun observeResultState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.getMemesUiState.collectLatest {
-                    onLoadingState(it)
-                    onErrorState(it)
-                    onSuccessState(it)
+                viewModel.getMemesUiState.collectLatest { uiState ->
+                    onInitialState(uiState)
+                    onLoadingState(uiState)
+                    onErrorState(uiState)
+                    onSuccessState(uiState)
                 }
             }
+        }
+    }
+
+    private fun onInitialState(result: UiState<List<MemeItemUIModel>>) {
+        if (result.isInitialState) {
+            getMemes()
         }
     }
 

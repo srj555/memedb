@@ -43,7 +43,6 @@ class MemeSearchViewModelTest {
         coEvery { getMemesUseCase.invoke() } returns MockResponse.getResourceData()
 
         memeSearchViewModel.getMemes()
-        memeSearchViewModel.initialServiceInvoked = true
 
         assertNotNull(memeSearchViewModel.getMemesUiState.value.data)
     }
