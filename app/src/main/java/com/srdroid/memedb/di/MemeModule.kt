@@ -6,19 +6,11 @@ import com.srdroid.memedb.domain.repository.MemeRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import retrofit2.Retrofit
-import javax.inject.Singleton
+import dagger.hilt.android.components.ViewModelComponent
 
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 @Module
 object MemeModule {
-
-    @Provides
-    @Singleton
-    fun provideMemeAPI(retrofit: Retrofit): MemeAPI {
-        return retrofit.create(MemeAPI::class.java)
-    }
 
     @Provides
     fun provideMemeSearchRepository(memeAPI: MemeAPI): MemeRepository {

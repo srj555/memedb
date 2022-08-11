@@ -6,9 +6,9 @@ import com.srdroid.memedb.domain.repository.MemeDetailsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ViewModelComponent
 
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 @Module
 object MemeDetailsModule {
     @Provides
