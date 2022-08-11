@@ -12,6 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.srdroid.memedb.databinding.FragmentMemeDetailsBinding
+import com.srdroid.memedb.presentation.model.MemeItemUIModel
+import com.srdroid.memedb.presentation.model.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -42,7 +44,7 @@ class MemeDetailsFragment : Fragment() {
     private fun observeResultState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.memeDetails.collectLatest { result ->
+                viewModel.memeDetailsUiState.collectLatest { result ->
                     onLoadingState(result)
                     onSuccessState(result)
                     onErrorState(result)
@@ -51,20 +53,20 @@ class MemeDetailsFragment : Fragment() {
         }
     }
 
-    private fun onSuccessState(result: MemeDetailsState) {
+    private fun onSuccessState(result: UiState<MemeItemUIModel>) {
         result.data?.let {
             updateProgress(false)
             binding.memeDetails = it
         }
     }
 
-    private fun onLoadingState(result: MemeDetailsState) {
+    private fun onLoadingState(result: UiState<MemeItemUIModel>) {
         if (result.isLoading) {
             updateProgress(true)
         }
     }
 
-    private fun onErrorState(result: MemeDetailsState) {
+    private fun onErrorState(result: UiState<MemeItemUIModel>) {
         result.error?.let {
             updateProgress(false)
             Toast.makeText(requireContext(), result.error.message, Toast.LENGTH_SHORT)

@@ -44,7 +44,7 @@ class MemeDetailViewModelUT {
 
         memeDetailsViewModel.getMemeDetails(ID)
 
-        assertEquals(memeDetailsViewModel.memeDetails.value.data?.id, ID)
+        assertEquals(memeDetailsViewModel.memeDetailsUiState.value.data?.id, ID)
     }
 
     @Test
@@ -53,7 +53,7 @@ class MemeDetailViewModelUT {
 
         memeDetailsViewModel.getMemeDetails(ID)
 
-        assertNotNull(memeDetailsViewModel.memeDetails.value.error)
+        assertNotNull(memeDetailsViewModel.memeDetailsUiState.value.error)
 
     }
 

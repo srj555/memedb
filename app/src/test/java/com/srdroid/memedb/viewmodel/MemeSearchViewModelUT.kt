@@ -45,7 +45,7 @@ class MemeSearchViewModelUT {
         memeSearchViewModel.getMemes()
         memeSearchViewModel.initialServiceInvoked = true
 
-        assertNotNull(memeSearchViewModel.getMemesState.value.data)
+        assertNotNull(memeSearchViewModel.getMemesUiState.value.data)
     }
 
     @Test
@@ -54,7 +54,7 @@ class MemeSearchViewModelUT {
 
         memeSearchViewModel.getMemes()
 
-        assertNotNull(memeSearchViewModel.getMemesState.value.error)
+        assertNotNull(memeSearchViewModel.getMemesUiState.value.error)
     }
 
     @Test
@@ -65,7 +65,7 @@ class MemeSearchViewModelUT {
         memeSearchViewModel.filterMemes("d")
 
         assertTrue(
-            memeSearchViewModel.getMemesState.value.data?.get(0)?.name?.contains("d") ?: false
+            memeSearchViewModel.getMemesUiState.value.data?.get(0)?.name?.contains("d") ?: false
         )
     }
 

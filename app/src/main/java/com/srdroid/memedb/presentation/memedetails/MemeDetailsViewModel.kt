@@ -6,6 +6,8 @@ import com.srdroid.memedb.core.Resource
 import com.srdroid.memedb.domain.usecases.GetMemeDetailsUseCase
 import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
+import com.srdroid.memedb.presentation.model.MemeItemUIModel
+import com.srdroid.memedb.presentation.model.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,23 +22,23 @@ class MemeDetailsViewModel @Inject constructor(
     private val errorViewMapper: ErrorViewMapper
 ) : ViewModel() {
 
-    private val _memeDetails = MutableStateFlow(MemeDetailsState())
-    val memeDetails: StateFlow<MemeDetailsState> = _memeDetails
+    private val _memeDetailsUiState = MutableStateFlow(UiState<MemeItemUIModel>())
+    val memeDetailsUiState: StateFlow<UiState<MemeItemUIModel>> = _memeDetailsUiState
 
     fun getMemeDetails(id: String) {
         memeDetailsUseCase(id)
             .onEach {
                 when (it) {
                     is Resource.Loading -> {
-                        _memeDetails.value = MemeDetailsState(isLoading = true)
+                        _memeDetailsUiState.value = UiState(isLoading = true)
                     }
                     is Resource.Error -> {
-                        _memeDetails.value =
-                            MemeDetailsState(error = errorViewMapper.mapToOut(it.errorEntity))
+                        _memeDetailsUiState.value =
+                            UiState(error = errorViewMapper.mapToOut(it.errorEntity))
                     }
                     is Resource.Success -> {
-                        _memeDetails.value =
-                            MemeDetailsState(data = it.data
+                        _memeDetailsUiState.value =
+                            UiState(data = it.data
                                 ?.map { memeData ->
                                     mapper.mapToOut(
                                         memeData

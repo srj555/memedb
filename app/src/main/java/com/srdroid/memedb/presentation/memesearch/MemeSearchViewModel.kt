@@ -7,6 +7,7 @@ import com.srdroid.memedb.domain.usecases.GetMemeUseCase
 import com.srdroid.memedb.presentation.mapper.ErrorViewMapper
 import com.srdroid.memedb.presentation.mapper.MemeMapper
 import com.srdroid.memedb.presentation.model.MemeItemUIModel
+import com.srdroid.memedb.presentation.model.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -22,24 +23,25 @@ class MemeSearchViewModel @Inject constructor(
 
     var initialServiceInvoked: Boolean = false
 
-    private val _getMemesState = MutableStateFlow(MemeSearchState())
-    val getMemesState: StateFlow<MemeSearchState> = _getMemesState
+    private val _getMemesUiState: MutableStateFlow<UiState<List<MemeItemUIModel>>> =
+        MutableStateFlow(UiState())
+    val getMemesUiState: StateFlow<UiState<List<MemeItemUIModel>>> = _getMemesUiState
     private lateinit var _memesList: List<MemeItemUIModel>
 
     fun getMemes() {
         getMemeUseCase().onEach {
             when (it) {
                 is Resource.Loading -> {
-                    _getMemesState.value = MemeSearchState(isLoading = true)
+                    _getMemesUiState.value = UiState(isLoading = true)
                 }
                 is Resource.Success -> {
                     _memesList =
                         it.data?.map { memeData -> mapper.mapToOut(memeData) } ?: listOf()
-                    _getMemesState.value = MemeSearchState(data = _memesList)
+                    _getMemesUiState.value = UiState(data = _memesList)
                 }
                 is Resource.Error -> {
-                    _getMemesState.value =
-                        MemeSearchState(error = errorViewMapper.mapToOut(it.errorEntity))
+                    _getMemesUiState.value =
+                        UiState(error = errorViewMapper.mapToOut(it.errorEntity))
                 }
             }
         }.launchIn(viewModelScope)
@@ -50,7 +52,7 @@ class MemeSearchViewModel @Inject constructor(
             val filteredData = _memesList.filter {
                 it.name.lowercase().contains(s.lowercase())
             }
-            _getMemesState.update {
+            _getMemesUiState.update {
                 it.copy(data = filteredData)
             }
         }

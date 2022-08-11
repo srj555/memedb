@@ -12,6 +12,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.srdroid.memedb.R
 import com.srdroid.memedb.databinding.FragmentMemeSearchBinding
+import com.srdroid.memedb.presentation.model.MemeItemUIModel
+import com.srdroid.memedb.presentation.model.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -56,7 +58,7 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun observeResultState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.getMemesState.collectLatest {
+                viewModel.getMemesUiState.collectLatest {
                     onLoadingState(it)
                     onErrorState(it)
                     onSuccessState(it)
@@ -65,7 +67,7 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
         }
     }
 
-    private fun onSuccessState(uiState: MemeSearchState) {
+    private fun onSuccessState(uiState: UiState<List<MemeItemUIModel>>) {
         uiState.data?.let { result ->
             if (result.isEmpty()) {
                 binding.nothingFound.visibility = View.VISIBLE
@@ -77,7 +79,7 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
         }
     }
 
-    private fun onErrorState(uiState: MemeSearchState) {
+    private fun onErrorState(uiState: UiState<List<MemeItemUIModel>>) {
         uiState.error?.let {
             binding.nothingFound.visibility = View.GONE
             binding.progressSearch.visibility = View.GONE
@@ -85,7 +87,7 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
         }
     }
 
-    private fun onLoadingState(uiState: MemeSearchState) {
+    private fun onLoadingState(uiState: UiState<List<MemeItemUIModel>>) {
         if (uiState.isLoading) {
             binding.nothingFound.visibility = View.GONE
             binding.progressSearch.visibility = View.VISIBLE
