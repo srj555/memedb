@@ -23,8 +23,7 @@ class MemeSearchViewModel @Inject constructor(
 
     var initialServiceInvoked: Boolean = false
 
-    private val _getMemesUiState: MutableStateFlow<UiState<List<MemeItemUIModel>>> =
-        MutableStateFlow(UiState())
+    private val _getMemesUiState = MutableStateFlow(UiState<List<MemeItemUIModel>>())
     val getMemesUiState: StateFlow<UiState<List<MemeItemUIModel>>> = _getMemesUiState
     private lateinit var _memesList: List<MemeItemUIModel>
 
