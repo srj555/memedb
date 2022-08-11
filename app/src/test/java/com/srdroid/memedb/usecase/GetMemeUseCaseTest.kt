@@ -22,7 +22,7 @@ import org.junit.Test
 
 
 @ExperimentalCoroutinesApi
-class GetMemeUseCaseUT {
+class GetMemeUseCaseTest {
 
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()

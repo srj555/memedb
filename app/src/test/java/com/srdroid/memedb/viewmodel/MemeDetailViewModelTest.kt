@@ -21,7 +21,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class MemeDetailViewModelUT {
+class MemeDetailViewModelTest {
 
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()

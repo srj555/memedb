@@ -24,7 +24,7 @@ import org.junit.Test
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @ExperimentalCoroutinesApi
-class MemeSearchViewModelUT {
+class MemeSearchViewModelTest {
 
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()

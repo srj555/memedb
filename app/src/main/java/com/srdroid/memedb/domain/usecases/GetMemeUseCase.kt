@@ -6,13 +6,11 @@ import com.srdroid.memedb.domain.errorhandler.ErrorHandler
 import com.srdroid.memedb.domain.mappers.MemeModelMapper
 import com.srdroid.memedb.domain.model.MemeModel
 import com.srdroid.memedb.domain.repository.MemeRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
 class GetMemeUseCase @Inject constructor(
     private val repository: MemeRepository,
     private val mapper: MemeModelMapper,
