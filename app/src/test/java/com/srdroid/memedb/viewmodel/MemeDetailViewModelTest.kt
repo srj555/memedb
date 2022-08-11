@@ -16,7 +16,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -29,14 +28,12 @@ class MemeDetailViewModelTest {
     private val getDetailsUseCase = mockk<GetMemeDetailsUseCase>()
     private val mapper = MemeMapper()
 
-    private lateinit var memeDetailsViewModel: MemeDetailsViewModel
+    private val memeDetailsViewModel: MemeDetailsViewModel by lazy {
+        MemeDetailsViewModel(getDetailsUseCase, mapper, errorViewMapper)
+    }
+
     private val mContextMock = mockk<Context>(relaxed = true)
     private val errorViewMapper = ErrorViewMapper(mContextMock)
-
-    @Before
-    fun setUp() {
-        memeDetailsViewModel = MemeDetailsViewModel(getDetailsUseCase, mapper, errorViewMapper)
-    }
 
     @Test
     fun `Given response When get details of id Expect ui state value contains id`() = runTest {
@@ -58,7 +55,7 @@ class MemeDetailViewModelTest {
     }
 
     @After
-    fun tearDown(){
+    fun tearDown() {
         unmockkAll()
     }
 

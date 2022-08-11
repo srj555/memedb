@@ -36,7 +36,7 @@ class MemeDetailsUseCaseTest {
     }
 
     @Test
-    fun `Given response when invoke details use case expect ui state value contains id`() =
+    fun `Given response when invoke details use case expect response contains ID`() =
         runTest {
             coEvery { memeDetailsRepository.getMemeDetails(ID) } returns getMemesModel()
 
@@ -46,16 +46,16 @@ class MemeDetailsUseCaseTest {
         }
 
     @Test
-    fun `Given http error when invoke details use case expect null data`() = runTest {
+    fun `Given error when invoke details use case expect null data`() = runTest {
         coEvery { memeDetailsRepository.getMemeDetails(ID) }.throws(Throwable())
 
-        val first = memeDetailsUseCase.invoke(ID).first()
+        val first = memeDetailsUseCase.invoke(ID).drop(1).first()
 
         Assert.assertNull(first.data)
     }
 
     @After
-    fun tearDown(){
+    fun tearDown() {
         unmockkAll()
     }
 }

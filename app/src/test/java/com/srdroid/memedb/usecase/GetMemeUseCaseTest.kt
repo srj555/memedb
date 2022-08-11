@@ -27,7 +27,7 @@ class GetMemeUseCaseTest {
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()
 
-    private val memeSearchRepository = mockk<MemeRepositoryImpl>()
+    private val memeSearchRepository = mockk<MemeRepositoryImpl>(relaxed = true)
 
     private val searchMemesUseCase by lazy {
         GetMemeUseCase(
@@ -48,15 +48,15 @@ class GetMemeUseCaseTest {
 
     @Test
     fun `Given http error when invoke memes use case expect null data`() = runTest {
-        coEvery { memeSearchRepository.getMemes() }.throws(Throwable())
+        coEvery { memeSearchRepository.getMemes() }.throws(Throwable("Test"))
 
-        val first = searchMemesUseCase.invoke().first()
+        val first = searchMemesUseCase.invoke().drop(1).first()
 
         assertNull(first.data)
     }
 
     @After
-    fun tearDown(){
+    fun tearDown() {
         unmockkAll()
     }
 }
