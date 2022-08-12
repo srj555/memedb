@@ -52,7 +52,7 @@ class MemeSearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun observeResultState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getMemesUiState.collectLatest { uiState ->
                     onInitialState(uiState)
                     onLoadingState(uiState)
